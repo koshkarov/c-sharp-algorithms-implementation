@@ -20,9 +20,10 @@ namespace DataStructures
         /// <param name="value"></param>
         public void Enqueue(T value)
         {
+            _size = _size +1;
             if (_size > CAPACITY)
                 throw new InvalidOperationException("Queue Overflow!");
-            _arr[(_head + ++_size) % CAPACITY] = value;
+            _arr[(_head + _size) % CAPACITY] = value;
         }
 
         /// <summary>

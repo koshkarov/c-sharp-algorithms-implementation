@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\DoublyLinkedListNode.cs" />
-    <Compile Include="DataStructures\BinaryTree.cs" />
+    <Compile Include="DataStructures\BinaryTreeNode.cs" />
     <Compile Include="DataStructures\HashTable.cs" />
     <Compile Include="DataStructures\LinkedList.cs" />
     <Compile Include="DataStructures\LinkedListNode.cs" />
@@ -62,6 +62,8 @@
     <Compile Include="DataStructures\QueueArray.cs" />
     <Compile Include="DataStructures\StackArray.cs" />
     <Compile Include="DataStructures\StackLinkedList.cs" />
+    <Compile Include="Tests\StackLinkedListTests.cs" />
+    <Compile Include="Tests\StackArrayTests.cs" />
     <Compile Include="Tests\TrieTests.cs" />
     <Compile Include="Tests\HashTableTests.cs" />
     <Compile Include="Tests\QueueLinkedListTests.cs" />

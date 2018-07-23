@@ -9,20 +9,25 @@ namespace DataStructures
     /// 
     public class StackArray<T>
     {
-        private const int _capacity = 1000;
-        private T[] _arr = new T[_capacity];
+        private readonly int _size;
+        private readonly T[] _arr;
         private int _top = -1;
 
+        public StackArray(int size)
+        {
+            _size = size;
+            _arr = new T[size];
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="value"></param>
         public void Push(T value)
         {
-            if (_top >= _capacity)
+            _top = _top + 1;
+            if (_top >= _size)
                 throw new InvalidOperationException("Stack Overflow!");
-
-            _arr[++_top] = value;
+            _arr[_top] = value;
         }
 
         /// <summary>
@@ -32,7 +37,7 @@ namespace DataStructures
         public T Pop()
         {
             if (_top < 0)
-                throw new InvalidOperationException("Stack Underflow!");
+                throw new InvalidOperationException("The Stack is empty.");
             return _arr[_top--];
         }
     }

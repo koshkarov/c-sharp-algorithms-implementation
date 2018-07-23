@@ -19,7 +19,7 @@ namespace DataStructures
         {
             if (_head == null)
             {
-                throw new InvalidOperationException("The stack is empty.");
+                throw new InvalidOperationException("The Stack is empty.");
             }
 
             T result = _head.Value;

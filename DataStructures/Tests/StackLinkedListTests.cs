@@ -4,42 +4,42 @@ using System;
 namespace DataStructures.Tests
 {
     [TestFixture]
-    class QueueLinkedListTests
+    class StackLinkedListTests
     {
-        private QueueLinkedList<int> _q;
+        private StackLinkedList<int> _q;
         private static readonly int MAX_SIZE = 1000;
 
         [SetUp]
         protected void SetUp()
         {
-            _q = new QueueLinkedList<int>();
+            _q = new StackLinkedList<int>();
         }
 
         [Test]
-        public void EnqueueElements()
+        public void PushElements()
         {
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Enqueue(i);
+                _q.Push(i);
             }
         }
 
         [Test]
-        public void EnqueueDequeueElements()
+        public void PushPopElements()
         {
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Enqueue(i);
+                _q.Push(i);
             }
 
             for (int i = MAX_SIZE - 1; i < 0; i--)
             {
-                Assert.AreEqual(i, _q.Dequeue());
+                Assert.AreEqual(i, _q.Pop());
             }
         }
 
         [Test]
-        public void QueueuUnderflow()
+        public void StackIsEmpty()
         {
             InvalidOperationException ex = new InvalidOperationException();
 
@@ -47,12 +47,12 @@ namespace DataStructures.Tests
             {
                 for (int i = 0; i < MAX_SIZE; i++)
                 {
-                    _q.Enqueue(i);
+                    _q.Push(i);
                 }
 
                 for (int i = 0; i < MAX_SIZE + 1; i++)
                 {
-                    _q.Dequeue();
+                    _q.Pop();
                 }
             }
             catch (InvalidOperationException e)
@@ -60,7 +60,7 @@ namespace DataStructures.Tests
                 ex = e;
             }
 
-            Assert.AreEqual("The Queueue is empty.", ex.Message);
+            Assert.AreEqual("The Stack is empty.", ex.Message);
         }
     }
 }
