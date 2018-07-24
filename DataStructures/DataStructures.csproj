@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\BinaryTree.cs" />
     <Compile Include="DataStructures\DoublyLinkedListNode.cs" />
     <Compile Include="DataStructures\BinaryTreeNode.cs" />
     <Compile Include="DataStructures\HashTable.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="DataStructures\StackLinkedList.cs" />
     <Compile Include="Tests\StackLinkedListTests.cs" />
     <Compile Include="Tests\StackArrayTests.cs" />
+    <Compile Include="Tests\BinarySearchTreeTests.cs" />
     <Compile Include="Tests\TrieTests.cs" />
     <Compile Include="Tests\HashTableTests.cs" />
     <Compile Include="Tests\QueueLinkedListTests.cs" />
