@@ -8,8 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BDACC313-5EE9-4115-9B45-31AE5B146E5F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>DataStructures</RootNamespace>
-    <AssemblyName>DataStructures</AssemblyName>
+    <RootNamespace>Algorithms</RootNamespace>
+    <AssemblyName>Algorithms</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -49,20 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\BinaryTree.cs" />
-    <Compile Include="DataStructures\DoublyLinkedListNode.cs" />
-    <Compile Include="DataStructures\BinaryTreeNode.cs" />
-    <Compile Include="DataStructures\HashTable.cs" />
-    <Compile Include="DataStructures\LinkedList.cs" />
-    <Compile Include="DataStructures\LinkedListNode.cs" />
-    <Compile Include="DataStructures\Tree.cs" />
-    <Compile Include="DataStructures\TrieNode.cs" />
+    <Compile Include="Algorithms\Sort\Sort.cs" />
+    <Compile Include="Tests\MergeSortTests.cs" />
+    <Compile Include="Algorithms\DataStructures\BinaryTree.cs" />
+    <Compile Include="Algorithms\DataStructures\DoublyLinkedListNode.cs" />
+    <Compile Include="Algorithms\DataStructures\BinaryTreeNode.cs" />
+    <Compile Include="Algorithms\DataStructures\HashTable.cs" />
+    <Compile Include="Algorithms\DataStructures\LinkedList.cs" />
+    <Compile Include="Algorithms\DataStructures\LinkedListNode.cs" />
+    <Compile Include="Algorithms\DataStructures\Tree.cs" />
+    <Compile Include="Algorithms\DataStructures\TrieNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataStructures\QueueLinkedList.cs" />
-    <Compile Include="DataStructures\QueueArray.cs" />
-    <Compile Include="DataStructures\StackArray.cs" />
-    <Compile Include="DataStructures\StackLinkedList.cs" />
+    <Compile Include="Algorithms\DataStructures\QueueLinkedList.cs" />
+    <Compile Include="Algorithms\DataStructures\QueueArray.cs" />
+    <Compile Include="Algorithms\DataStructures\StackArray.cs" />
+    <Compile Include="Algorithms\DataStructures\StackLinkedList.cs" />
     <Compile Include="Tests\StackLinkedListTests.cs" />
     <Compile Include="Tests\StackArrayTests.cs" />
     <Compile Include="Tests\BinarySearchTreeTests.cs" />
@@ -75,6 +77,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

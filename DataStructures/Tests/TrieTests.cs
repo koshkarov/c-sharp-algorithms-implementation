@@ -1,6 +1,7 @@
-﻿using NUnit.Framework;
+﻿using Algorithms.Algorithms;
+using NUnit.Framework;
 
-namespace DataStructures.Tests
+namespace Algorithms.Tests
 {
     [TestFixture]
     class TrieTests

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
-namespace DataStructures
+namespace Algorithms.Algorithms
 {
     public class BinaryTree
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataStructures
+namespace Algorithms.Algorithms
 {
     public class QueueLinkedList<T>
     {

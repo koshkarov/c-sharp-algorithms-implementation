@@ -1,4 +1,4 @@
-﻿namespace DataStructures
+﻿namespace Algorithms.Algorithms
 {
     public class TrieNode<T>
     {

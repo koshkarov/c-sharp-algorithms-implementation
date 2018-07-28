@@ -1,7 +1,8 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
+using Algorithms.Algorithms;
+using NUnit.Framework;
 
-namespace DataStructures.Tests
+namespace Algorithms.Tests
 {
     [TestFixture]
     class StackLinkedListTests

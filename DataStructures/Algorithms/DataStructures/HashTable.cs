@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataStructures
+namespace Algorithms.Algorithms
 {
     public class HashTable<TK, TV>
     {

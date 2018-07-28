@@ -1,4 +1,4 @@
-﻿namespace DataStructures
+﻿namespace Algorithms.Algorithms
 {
     /// <summary>
     /// Creates a new linked list node of arbitrary type <typeparamref name="T"/>

@@ -1,4 +1,4 @@
-﻿namespace DataStructures
+﻿namespace Algorithms.Algorithms
 {
     class LinkedList<T>
     {

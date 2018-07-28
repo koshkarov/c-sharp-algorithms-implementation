@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DataStructures
+namespace Algorithms.Algorithms
 {
     /// <summary>
     /// Creates a new tree node of arbitrary type <typeparamref name="T"/>
