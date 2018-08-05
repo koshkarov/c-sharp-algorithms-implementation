@@ -37,5 +37,10 @@ namespace Algorithms.Algorithms
             _size--;
             return _arr[_head++];
         }
+
+        public bool IsEmpty()
+        {
+            return _size <= 0;
+        }
     }
 }

@@ -43,6 +43,11 @@ namespace Algorithms.Algorithms
 
             return result;
         }
+
+        public bool IsEmpty()
+        {
+            return _head == null;
+        }
     }
 
 
