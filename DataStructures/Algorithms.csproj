@@ -49,14 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\BFS.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Alternatives\GraphAdjacencyList.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Alternatives\GraphAlternatives.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Edge.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Graph0.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Graph.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\GraphType.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\Vertex.cs" />
     <Compile Include="Algorithms\Sort\Sort.cs" />
+    <Compile Include="Tests\GraphALBreadthFirstSearch.cs" />
+    <Compile Include="Tests\BreadtFirstSearchTests.cs" />
     <Compile Include="Tests\MergeSortTests.cs" />
     <Compile Include="Algorithms\DataStructures\BinaryTree.cs" />
     <Compile Include="Algorithms\DataStructures\DoublyLinkedListNode.cs" />
     <Compile Include="Algorithms\DataStructures\BinaryTreeNode.cs" />
     <Compile Include="Algorithms\DataStructures\HashTable.cs" />
     <Compile Include="Algorithms\DataStructures\LinkedList.cs" />
-    <Compile Include="Algorithms\DataStructures\LinkedListNode.cs" />
     <Compile Include="Algorithms\DataStructures\Tree.cs" />
     <Compile Include="Algorithms\DataStructures\TrieNode.cs" />
     <Compile Include="Program.cs" />
@@ -77,7 +86,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Intefaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

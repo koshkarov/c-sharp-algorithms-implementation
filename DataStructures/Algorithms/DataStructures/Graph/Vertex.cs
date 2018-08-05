@@ -40,4 +40,3 @@ namespace Algorithms.Algorithms.Graph
     }
 
 }
-}

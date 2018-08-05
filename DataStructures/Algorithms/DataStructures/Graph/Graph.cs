@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Algorithms.Algorithms.Graph;
 
-namespace Algorithms.Algorithms
+namespace Algorithms.Algorithms.Graph
 {
     /// <summary>
     /// Graph. Could be directed or undirected depending on the TYPE enum. A graph is
@@ -13,12 +12,6 @@ namespace Algorithms.Algorithms
     {
         private List<Vertex<T>> allVertices = new List<Vertex<T>>();
         private List<Edge<T>> allEdges = new List<Edge<T>>();
-
-        public enum GraphType
-        {
-            Directed,
-            Undirected
-        }
 
         /** Defaulted to undirected */
         private GraphType _graphType;
@@ -56,6 +49,10 @@ namespace Algorithms.Algorithms
             }
         }
 
+
+        public void BFS(T vertex)
+        {
+
+        }
     }
-}
 }
