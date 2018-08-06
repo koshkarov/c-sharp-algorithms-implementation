@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Algorithms.Algorithms.Graph.Alternatives
 {
     public class GraphAdjacencyList<T>
     {
         //private int V;
-        private Dictionary<T, List<T>> _adjacencyList = new Dictionary<T, List<T>>();
+        private Dictionary<T, HashSet<T>> _adjacencyList = new Dictionary<T, HashSet<T>>();
         private GraphType _graphType;
 
         public GraphAdjacencyList() : this(GraphType.Undirected)
@@ -23,28 +24,29 @@ namespace Algorithms.Algorithms.Graph.Alternatives
             if (_adjacencyList.ContainsKey(source))
                 _adjacencyList[source].Add(destination);
             else
-                _adjacencyList[source] = new List<T>() {destination};
+                _adjacencyList[source] = new HashSet<T>() {destination};
 
-            //if (_graphType == GraphType.Undirected)
-            //    if (_adjacencyList.ContainsKey(destination))
-            //        _adjacencyList[destination].Add(source);
-            //    else
-            //        _adjacencyList[destination] = new List<T>() {source};
+            if (_graphType == GraphType.Undirected)
+                if (_adjacencyList.ContainsKey(destination))
+                    _adjacencyList[destination].Add(source);
+                else
+                    _adjacencyList[destination] = new HashSet<T>() { source };
         }
 
-        public void AddEdges(T source, List<T> edgesList)
+        public void AddEdges(T source, HashSet<T> destinations)
         {
             if (_adjacencyList.ContainsKey(source))
-                _adjacencyList[source].AddRange(edgesList);
+                foreach (var destination in destinations)
+                    _adjacencyList[source].Add(destination);
             else
-                _adjacencyList[source] = edgesList;
+                _adjacencyList[source] = destinations;
 
-            //if (_graphType == GraphType.Undirected)
-            //    foreach (var destination in edgesList)
-            //        if (_adjacencyList.ContainsKey(destination))
-            //            _adjacencyList[destination].Add(source);
-            //        else
-            //            _adjacencyList[destination] = new List<T>() {source};
+            if (_graphType == GraphType.Undirected)
+                foreach (var destination in destinations)
+                    if (_adjacencyList.ContainsKey(destination))
+                        _adjacencyList[destination].Add(source);
+                    else
+                        _adjacencyList[destination] = new HashSet<T>() { source };
         }
 
         public Dictionary<T, BfsVertexInfo<T>> BFS(T source)
@@ -76,6 +78,48 @@ namespace Algorithms.Algorithms.Graph.Alternatives
             }
 
             return bfsInfo;
+        }
+
+        public void PrintAllRoutes(T source, T destination)
+        {
+            var isVisited = new Dictionary<T, bool>();
+            foreach (var pair in _adjacencyList)
+            {
+                isVisited[pair.Key] = new bool();
+            }
+
+            var pathList = new List<T> { source };
+
+            PrintAllPaths(source, destination, isVisited, pathList);
+
+        }
+
+        private void PrintAllPaths(T source, T destination, Dictionary<T, bool> isVisited, List<T> pathList)
+        {
+            isVisited[source] = true;
+
+            if (source.Equals(destination))
+            {
+                foreach (var item in pathList)
+                {
+                    Console.Write($"{item} ");
+
+                }
+                Console.WriteLine();
+            }
+
+            foreach (T vertex in _adjacencyList[source])
+            {
+                if (!isVisited[vertex])
+                {
+                    pathList.Add(vertex);
+                    PrintAllPaths(vertex, destination, isVisited, pathList);
+
+                    pathList.Remove(vertex);
+                }
+            }
+
+            isVisited[source] = false;
         }
     }
 }

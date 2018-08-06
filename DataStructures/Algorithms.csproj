@@ -58,7 +58,8 @@
     <Compile Include="Algorithms\DataStructures\Graph\GraphType.cs" />
     <Compile Include="Algorithms\DataStructures\Graph\Vertex.cs" />
     <Compile Include="Algorithms\Sort\Sort.cs" />
-    <Compile Include="Tests\GraphALBreadthFirstSearch.cs" />
+    <Compile Include="Tests\GraphALBreadthFirstSearch - Copy.cs" />
+    <Compile Include="Tests\GraphAdjacencyListTests.cs" />
     <Compile Include="Tests\BreadtFirstSearchTests.cs" />
     <Compile Include="Tests\MergeSortTests.cs" />
     <Compile Include="Algorithms\DataStructures\BinaryTree.cs" />
