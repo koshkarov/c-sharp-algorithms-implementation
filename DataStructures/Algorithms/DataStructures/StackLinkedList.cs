@@ -44,5 +44,10 @@ namespace Algorithms.Algorithms
                 _head = newNode;
             }
         }
+
+        public bool IsEmpty()
+        {
+            return _head == null;
+        }
     }
 }

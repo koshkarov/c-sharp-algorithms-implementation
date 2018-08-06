@@ -50,15 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\BFS.cs" />
-    <Compile Include="Algorithms\DataStructures\Graph\Alternatives\GraphAdjacencyList.cs" />
-    <Compile Include="Algorithms\DataStructures\Graph\Alternatives\GraphAlternatives.cs" />
+    <Compile Include="Algorithms\DataStructures\BTree.cs" />
+    <Compile Include="Algorithms\DataStructures\RedBlackTree.cs" />
+    <Compile Include="Algorithms\DataStructures\AVLTree.cs" />
+    <Compile Include="Algorithms\DataStructures\Graph\GraphAdjacencyList.cs" />
     <Compile Include="Algorithms\DataStructures\Graph\Edge.cs" />
-    <Compile Include="Algorithms\DataStructures\Graph\Graph0.cs" />
     <Compile Include="Algorithms\DataStructures\Graph\Graph.cs" />
     <Compile Include="Algorithms\DataStructures\Graph\GraphType.cs" />
     <Compile Include="Algorithms\DataStructures\Graph\Vertex.cs" />
     <Compile Include="Algorithms\Sort\Sort.cs" />
-    <Compile Include="Tests\GraphALBreadthFirstSearch - Copy.cs" />
     <Compile Include="Tests\GraphAdjacencyListTests.cs" />
     <Compile Include="Tests\BreadtFirstSearchTests.cs" />
     <Compile Include="Tests\MergeSortTests.cs" />

@@ -71,6 +71,14 @@ namespace Algorithms.Algorithms
             PreOrderTraversal(node.Right, list);
         }
 
+        private static void PostOrderTraversal(BinaryTreeNode<int> node, List<int> list)
+        {
+            if (node == null) return;
+            PostOrderTraversal(node.Left, list);
+            PostOrderTraversal(node.Right, list);
+            list.Add(node.Value);
+        }
+
         public bool IsBinarySearchTreeTraversal()
         {
             return IsBstTraversal(Root);

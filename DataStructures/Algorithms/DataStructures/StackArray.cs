@@ -40,5 +40,10 @@ namespace Algorithms.Algorithms
                 throw new InvalidOperationException("The Stack is empty.");
             return _arr[_top--];
         }
+
+        public bool IsEmpty()
+        {
+            return _top < 0;
+        }
     }
 }
