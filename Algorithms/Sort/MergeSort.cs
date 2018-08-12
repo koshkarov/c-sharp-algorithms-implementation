@@ -1,49 +1,59 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Algorithms.Sort
 {
+    /// <summary>
+    /// Merge sort is an O(n log n) comparison-based sorting algorithm. Most
+    /// implementations produce a stable sort, which means that the implementation
+    /// preserves the input order of equal elements in the sorted output.
+    /// </summary>
     public class MergeSort {
 
-        public static List<int> Sort(List<int> unsorted)
+        public static T[] Sort<T>(T[] arr) where T : IComparable<T>
         {
-            if (unsorted.Count == 1)
-                return unsorted;
+            int arrLength = arr.Length;
 
-            var left = new List<int>();
-            var right = new List<int>();
+            if (arrLength == 1)
+                return arr;
 
-            int middle = unsorted.Count / 2;
-            left.AddRange(unsorted.Take(middle));
-            right.AddRange(unsorted.Skip(middle).Take((unsorted.Count - middle)));
+            int middle = arrLength / 2;
+
+            T[] left = arr.Take(middle).ToArray();
+            T[] right = arr.Skip(middle).ToArray();
 
             return Merge(Sort(left), Sort(right));
         }
 
-        private static List<int> Merge(List<int> a, List<int> b)
+        private static T[] Merge<T>(T[] a, T[] b) where T : IComparable<T>
         {
             int i = 0;
             int j = 0;
 
-            int n = a.Count;
-            int m = b.Count;
-            List<int> result = new List<int>();
+            int aLength = a.Length;
+            int bLength = b.Length;
 
-            while (i < n || j < m)
+            List<T> result = new List<T>();
+            T[] resultArr = new T[aLength + bLength];
+
+            while (i < aLength || j < bLength)
             {
-                if ( j == m || (i < n  && a[i] <= b[j]))
+                if ( j == bLength || (i < aLength  && a[i].CompareTo(b[j]) <= 0))
                 {
                     result.Add(a[i]);
+                    resultArr[i + j] = a[i];
                     i++;
                 }
                 else
                 {
                     result.Add(b[j]);
+                    resultArr[i + j] = b[j];
                     j++;
                 }
             }
 
-            return result;
+            return resultArr;
         }
     }
 }
