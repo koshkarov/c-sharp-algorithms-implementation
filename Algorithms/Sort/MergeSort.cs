@@ -34,20 +34,17 @@ namespace Algorithms.Sort
             int aLength = a.Length;
             int bLength = b.Length;
 
-            List<T> result = new List<T>();
             T[] resultArr = new T[aLength + bLength];
 
             while (i < aLength || j < bLength)
             {
                 if ( j == bLength || (i < aLength  && a[i].CompareTo(b[j]) <= 0))
                 {
-                    result.Add(a[i]);
                     resultArr[i + j] = a[i];
                     i++;
                 }
                 else
                 {
-                    result.Add(b[j]);
                     resultArr[i + j] = b[j];
                     j++;
                 }
