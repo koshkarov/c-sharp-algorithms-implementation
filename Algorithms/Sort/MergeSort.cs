@@ -8,6 +8,12 @@ namespace Algorithms.Sort
     /// Merge sort is an O(n log n) comparison-based sorting algorithm. Most
     /// implementations produce a stable sort, which means that the implementation
     /// preserves the input order of equal elements in the sorted output.
+    ///
+    /// COMPLEXITY:
+    /// Worst-case performance: O(n log n)
+    /// Best-case performance: O(n log n) typical, O(n) natural variant
+    /// Average performance: O(n log n)
+    /// Worst-case space complexity: ?(n) total with O(n) auxiliary, O(1) auxiliary with linked lists
     /// </summary>
     public class MergeSort {
 
