@@ -117,7 +117,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = RadixSort.Sort(result);
+            result = RadixSort.Sort(result, RadixSort.RadixSortType.Lsd);
 
             for (int i = 0; i < result.Length; i++)
             {
