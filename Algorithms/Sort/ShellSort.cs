@@ -8,7 +8,7 @@ namespace Algorithms.Sort
         public static T[] Sort<T>(T[] arr) where T : IComparable<T>
         {
             // TODO
-            return arr;
+            throw new NotImplementedException();
         }
 
     }
