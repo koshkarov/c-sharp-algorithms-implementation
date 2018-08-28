@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace Algorithms.Sort
 {
@@ -9,11 +8,13 @@ namespace Algorithms.Sort
     /// efficient on large lists than more advanced algorithms such as quicksort,
     /// heapsort, or merge sort.
     /// 
-    /// COMPLEXITY:
-    /// Worst-case performance: ?(n2) comparisons, swaps
-    /// Best-case performance: O(n) comparisons, O(1) swaps
-    /// Average performance: ?(n2) comparisons, swaps
-    /// Worst-case space complexity: ?(n) total, O(1) auxiliary
+    /// Time complexity:
+    /// Best: Ω(n)
+    /// Average: Θ(n^2)
+    /// Worst: O(n^2)
+    ///
+    /// Space Complexity:
+    /// Worst: O(1)
     /// </summary>
     public class InsertionSort
     {

@@ -1,7 +1,32 @@
-# C# Data Structures
+# C# Algorithms Implementation
 
-This project contains a custom implementation of the data structures and covered with nUnit tests. 
-At this moment it has next data structures:
+This project contains a C# implementation of the algorithms and data structures. 
+
+Algorithms:
+- Binary Search Tree 
+ - Search
+ - Pre-, In-, Post- Traversal
+ - Is Binary Search Tree
+- Graph
+ - Union Find (disjoint-sets data type)
+ - Breadth First Search
+ - Depth First Search
+
+Sorts:
+ - Counting Sort
+ - Insertion Sort
+ - Merge Sort
+ - Quick Sort
+
+ Not Implemented:
+  - Bubble Sort
+  - Heap Sort
+  - Radix Sort
+  - Bucket Sort
+  - Selection Sort
+  - Shell Sort
+
+Data Structures
  - Linked List
  - Doubly Linked List
  - Queue (Array implementation)
@@ -10,7 +35,14 @@ At this moment it has next data structures:
  - Stack (Linked List implementation)
  - Binary Tree
  - HashTable (Array with Doubly Linked List implementation)
- - Trie (in progress)
+ - Trie
+ - Graph (Adjacency List)
+ - Graph (Objects)
+ 
+ Not Implemented:
+  - AVLTree
+  - BTree
+  - RedBlackTree
 
 Each data structure is covered with nUnit tests. 
 

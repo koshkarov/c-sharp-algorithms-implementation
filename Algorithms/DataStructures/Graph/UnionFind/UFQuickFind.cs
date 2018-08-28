@@ -5,18 +5,20 @@ using System.Text;
 namespace Algorithms
 {
     /// <summary>
-    /// The UnionFindQuickFind class represents a "union–find data type"
+    /// The <c>UnionFindQuickFind</c> class represents a "union–find data type"
     /// (also known as the "disjoint-sets data type").
+    /// </summary>
+    /// /// <remarks>
     /// It supports the "union" and "find" operations,  along with a "connected" operation
     /// for determining whether two sites  are in the same component
-    /// and a "count" operation that returns  the total number of components.
-    /// </summary>
-    public class UnionFindQuickUnion : IUnionFind
+    /// and a "count" operation that returns  the total number of components.s
+    /// </remarks>
+    public class UFQuickFind : IUnionFind
     {
         private int[] _arr;
         private int _count;
 
-        public UnionFindQuickUnion(int size)
+        public UFQuickFind(int size)
         {
             _count = size;
             _arr = new int[size];
@@ -34,10 +36,13 @@ namespace Algorithms
         /// <param name="q"></param>
         public void Union(int p, int q)
         {
-            int pRoot = Find(p);
-            int qRoot = Find(q);
-            if (qRoot == pRoot) return;
-            _arr[pRoot] = qRoot;
+            int pId = Find(p);
+            int qId = Find(q);
+
+            if (Connected(p, q)) return;
+
+            for (int i = 0; i < _arr.Length; i++)
+                if (_arr[i] == pId) _arr[i] = qId;
             _count--;
         }
 
@@ -48,9 +53,7 @@ namespace Algorithms
         public int Find(int p)
         {
             Validate(p);
-            while (p != _arr[p])
-                p = _arr[p];
-            return p;
+            return _arr[p];
         }
 
         /// <summary>
@@ -62,7 +65,9 @@ namespace Algorithms
         /// <returns></returns>
         public bool Connected(int p, int q)
         {
-            return Find(p) == Find(q);
+            Validate(p);
+            Validate(q);
+            return _arr[p] == _arr[q];
         }
 
         /// <summary>

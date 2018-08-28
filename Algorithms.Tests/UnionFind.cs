@@ -1,9 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Algorithms.DataStructures;
-using NUnit.Framework;
 
 namespace Algorithms.Tests
 {
@@ -22,14 +18,10 @@ namespace Algorithms.Tests
             
         }
 
-        /// <summary>
-        /// If the sites are in different components, merge the two components
-        /// and print the pair to standard output.
-        /// </summary>
         [Test]
         public void QuickFindTests()
         {
-            _unionFind = new UnionFindQuickFind(Size);
+            _unionFind = new UFQuickFind(Size);
             Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
             Assert.AreEqual(ExpectedCount, _unionFind.Count());
         }
@@ -37,7 +29,15 @@ namespace Algorithms.Tests
         [Test]
         public void QuickUnionTests()
         {
-            _unionFind = new UnionFindQuickUnion(Size);
+            _unionFind = new UFQuickUnion(Size);
+            Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
+            Assert.AreEqual(ExpectedCount, _unionFind.Count());
+        }
+
+        [Test]
+        public void QuickUnionWeightedTests()
+        {
+            _unionFind = new UFQuickUnionWeightedSize(Size);
             Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
             Assert.AreEqual(ExpectedCount, _unionFind.Count());
         }
@@ -45,7 +45,6 @@ namespace Algorithms.Tests
         private string GetNotConnectedUnions()
         {
             List<string> result = new List<string>();
-            // Print only NOT connected unions
             for (int i = 0; i < _unions.GetLength(0); i++)
             {
                 int p = _unions[i, 0];
@@ -59,16 +58,6 @@ namespace Algorithms.Tests
             }
 
             return string.Join(" : ", result);
-        }
-
-        private void PerformUnion()
-        {
-            for (int i = 0; i < _unions.GetLength(0); i++)
-            {
-                int p = _unions[i, 0];
-                int q = _unions[i, 1];
-                _unionFind.Union(p, q);
-            }
         }
     }
 }

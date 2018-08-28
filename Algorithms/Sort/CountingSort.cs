@@ -1,6 +1,4 @@
-using System;
-
-namespace Algorithms.Sort
+﻿namespace Algorithms.Sort
 {
     /// <summary>
     /// Counting sort is an algorithm for sorting a collection of objects according
@@ -9,11 +7,13 @@ namespace Algorithms.Sort
     /// value, and using arithmetic on those counts to determine the positions of
     /// each key value in the output sequence.
     ///
-    /// COMPLEXITY:
-    /// Worst-case performance: O(n + k)
-    /// Best-case performance: O(n + k)
-    /// Average performance: O(n + k)
-    /// Worst-case space complexity: O(n + k)
+    /// Time Complexity
+    /// Best: Ω(n+k)
+    /// Average: Θ(n+k)
+    /// Worst: O(n+k)
+    ///
+    /// Space Complexity
+    /// Worst: O(k)
     /// </summary>
     public class CountingSort {
 

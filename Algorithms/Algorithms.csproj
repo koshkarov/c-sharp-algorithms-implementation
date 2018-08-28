@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataStructures\" />
     <Folder Include="Graph\" />
   </ItemGroup>
 

@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 
 namespace Algorithms.Sort
@@ -9,11 +8,13 @@ namespace Algorithms.Sort
     /// implementations produce a stable sort, which means that the implementation
     /// preserves the input order of equal elements in the sorted output.
     ///
-    /// COMPLEXITY:
-    /// Worst-case performance: O(n log n)
-    /// Best-case performance: O(n log n) typical, O(n) natural variant
-    /// Average performance: O(n log n)
-    /// Worst-case space complexity: ?(n) total with O(n) auxiliary, O(1) auxiliary with linked lists
+    /// Time complexity:
+    /// Best: Ω(n log(n))
+    /// Average: Θ(n log(n))
+    /// Worst: O(n log(n))
+    ///
+    /// Space Complexity:
+    /// Worst: O(n)
     /// </summary>
     public class MergeSort {
 
