@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Algorithms
+namespace Algorithms.DataStructures.UnionFind
 {
     /// <summary>
-    /// The <c>UnionFindQuickFind</c> class represents a "union–find data type"
+    /// The <c>UFQuickUnionWeightedSize</c> class represents a "union–find data type"
     /// (also known as the "disjoint-sets data type").
     /// </summary>
     /// /// <remarks>
@@ -13,36 +11,47 @@ namespace Algorithms
     /// for determining whether two sites  are in the same component
     /// and a "count" operation that returns  the total number of components.s
     /// </remarks>
-    public class UFQuickFind : IUnionFind
+    public class UnionFindQuickUnionWeightedSize : IUnionFind
     {
         private int[] _arr;
+        private int[] _weight;
         private int _count;
 
-        public UFQuickFind(int size)
+        public UnionFindQuickUnionWeightedSize(int size)
         {
             _count = size;
             _arr = new int[size];
+            _weight = new int[size];
             for (int i = 0; i < size; i++)
+            {
                 _arr[i] = i;
+                _weight[i] = 0;
+            }
         }
 
         /// <summary>
-        /// Adds a connection between the two sites "p" and "q".
-        /// If "p" and "q" are in different components,
-        /// then it replaces these two components with a
-        /// new component that is the union of the two.
+        /// Merges the component containing site "p" with the 
+        /// the component containing site "q".
         /// </summary>
         /// <param name="p"></param>
         /// <param name="q"></param>
         public void Union(int p, int q)
         {
-            int pId = Find(p);
-            int qId = Find(q);
+            int pRoot = Find(p);
+            int qRoot = Find(q);
+            if (qRoot == pRoot) return;
 
-            if (Connected(p, q)) return;
+            if (_weight[pRoot] < _weight[qRoot])
+            {
+                _arr[pRoot] = qRoot;
+                _weight[qRoot] += _weight[pRoot];
 
-            for (int i = 0; i < _arr.Length; i++)
-                if (_arr[i] == pId) _arr[i] = qId;
+            }
+            else
+            {
+                _arr[qRoot] = pRoot;
+                _weight[pRoot] += _weight[qRoot];
+            }
             _count--;
         }
 
@@ -53,7 +62,12 @@ namespace Algorithms
         public int Find(int p)
         {
             Validate(p);
-            return _arr[p];
+            while (p != _arr[p])
+            {
+                _arr[p] = _arr[_arr[p]]; // Optimization: path compression
+                p = _arr[p];
+            }
+            return p;
         }
 
         /// <summary>
@@ -65,9 +79,7 @@ namespace Algorithms
         /// <returns></returns>
         public bool Connected(int p, int q)
         {
-            Validate(p);
-            Validate(q);
-            return _arr[p] == _arr[q];
+            return Find(p) == Find(q);
         }
 
         /// <summary>

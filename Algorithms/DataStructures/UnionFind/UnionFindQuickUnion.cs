@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Algorithms
+namespace Algorithms.DataStructures.UnionFind
 {
     /// <summary>
     /// The <c>UFQuickUnion</c> class represents a "union–find data type"
@@ -13,12 +11,12 @@ namespace Algorithms
     /// for determining whether two sites  are in the same component
     /// and a "count" operation that returns  the total number of components.s
     /// </remarks>
-    public class UFQuickUnion : IUnionFind
+    public class UnionFindQuickUnion : IUnionFind
     {
         private int[] _arr;
         private int _count;
 
-        public UFQuickUnion(int size)
+        public UnionFindQuickUnion(int size)
         {
             _count = size;
             _arr = new int[size];

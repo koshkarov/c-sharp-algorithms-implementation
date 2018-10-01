@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using Algorithms.DataStructures.UnionFind;
 
 namespace Algorithms.Tests
 {
@@ -21,7 +22,7 @@ namespace Algorithms.Tests
         [Test]
         public void QuickFindTests()
         {
-            _unionFind = new UFQuickFind(Size);
+            _unionFind = new UnionFindQuickFind(Size);
             Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
             Assert.AreEqual(ExpectedCount, _unionFind.Count());
         }
@@ -29,7 +30,7 @@ namespace Algorithms.Tests
         [Test]
         public void QuickUnionTests()
         {
-            _unionFind = new UFQuickUnion(Size);
+            _unionFind = new UnionFindQuickUnion(Size);
             Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
             Assert.AreEqual(ExpectedCount, _unionFind.Count());
         }
@@ -37,7 +38,7 @@ namespace Algorithms.Tests
         [Test]
         public void QuickUnionWeightedTests()
         {
-            _unionFind = new UFQuickUnionWeightedSize(Size);
+            _unionFind = new UnionFindQuickUnionWeightedSize(Size);
             Assert.AreEqual(ExpectedString, GetNotConnectedUnions());
             Assert.AreEqual(ExpectedCount, _unionFind.Count());
         }
