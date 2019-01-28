@@ -9,41 +9,49 @@ namespace Algorithms.DataStructures
     /// 
     public class StackArray<T>
     {
-        private readonly int _size;
+        private readonly int _capacity;
         private readonly T[] _arr;
-        private int _top = -1;
+        private int _head = 0;
 
-        public StackArray(int size)
+        public StackArray(int capacity)
         {
-            _size = size;
-            _arr = new T[size];
+            _capacity = capacity;
+            _arr = new T[capacity];
         }
+
         /// <summary>
-        /// 
+        /// Insert a new item. 
         /// </summary>
         /// <param name="value"></param>
         public void Push(T value)
         {
-            _top = _top + 1;
-            if (_top >= _size)
+            if (_head == _capacity)
                 throw new InvalidOperationException("Stack Overflow!");
-            _arr[_top] = value;
+
+            _arr[_head++] = value;
         }
 
         /// <summary>
-        /// 
+        /// Remove the most recently added item and return it.
         /// </summary>
         /// <returns></returns>
         public T Pop()
         {
-            if (_top < 0)
+            if (IsEmpty())
                 throw new InvalidOperationException("The Stack is empty.");
-            return _arr[_top--];
+
+            T value = _arr[--_head];
+            return value;
         }
 
         public bool IsEmpty()
         {
-            return _top < 0;
+            return _head == 0;
+        }
+
+        public int Size()
+        {
+            return _head;
         }
     }
 }

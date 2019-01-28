@@ -7,53 +7,93 @@ namespace Algorithms.Tests
     [TestFixture]
     class StackLinkedListTests
     {
-        private StackLinkedList<int> _q;
         private static readonly int MAX_SIZE = 1000;
-
-        [SetUp]
-        protected void SetUp()
-        {
-            _q = new StackLinkedList<int>();
-        }
 
         [Test]
         public void PushElements()
         {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Push(i);
+                stack.Push(i);
             }
         }
 
         [Test]
-        public void PushPopElements()
+        public void PopReturnsValue()
         {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Push(i);
+                stack.Push(i);
             }
 
-            for (int i = MAX_SIZE - 1; i < 0; i--)
+            for (int i = MAX_SIZE - 1; i > 0; i--)
             {
-                Assert.AreEqual(i, _q.Pop());
+                Assert.AreEqual(i, stack.Pop());
             }
+        }
+
+        [Test]
+        public void PushPop()
+        {
+            try
+            {
+                var stack = new StackLinkedList<int>(MAX_SIZE);
+                for (int i = 0; i < MAX_SIZE; i++)
+                {
+                    stack.Push(i);
+                }
+
+                for (int i = MAX_SIZE - 1; i > 0; i--)
+                {
+                    stack.Pop();
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.Fail("Failed to pop all elements.");
+            }
+            
+        }
+
+        [Test]
+        public void StackOverflow()
+        {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
+            InvalidOperationException ex = new InvalidOperationException();
+
+            try
+            {
+                for (int i = 0; i < MAX_SIZE + 1; i++)
+                {
+                    stack.Push(i);
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                ex = e;
+            }
+
+            Assert.AreEqual("Stack Overflow!", ex.Message);
         }
 
         [Test]
         public void StackIsEmpty()
         {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
             InvalidOperationException ex = new InvalidOperationException();
 
             try
             {
                 for (int i = 0; i < MAX_SIZE; i++)
                 {
-                    _q.Push(i);
+                    stack.Push(i);
                 }
 
                 for (int i = 0; i < MAX_SIZE + 1; i++)
                 {
-                    _q.Pop();
+                    stack.Pop();
                 }
             }
             catch (InvalidOperationException e)
@@ -62,6 +102,41 @@ namespace Algorithms.Tests
             }
 
             Assert.AreEqual("The Stack is empty.", ex.Message);
+        }
+
+        [Test]
+        public void EmptyStackSizeIsZero()
+        {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
+            Assert.AreEqual(0, stack.Size());
+        }
+
+        [Test]
+        public void StackSizeIncreases()
+        {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
+            for (int i = 0; i < MAX_SIZE; i++)
+            {
+                stack.Push(i);
+            }
+            Assert.AreEqual(MAX_SIZE, stack.Size());
+        }
+
+        [Test]
+        public void StackSizeDecreases()
+        {
+            var stack = new StackLinkedList<int>(MAX_SIZE);
+
+            for (int i = 0; i < MAX_SIZE; i++)
+            {
+                stack.Push(i);
+            }
+
+            for (int i = MAX_SIZE; i > 0; i--)
+            {
+                stack.Pop();
+            }
+            Assert.AreEqual(0, stack.Size());
         }
     }
 }

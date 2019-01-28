@@ -153,7 +153,7 @@ namespace Algorithms.DataStructures.Graph
                 return visitedVerticesInfo;
 
             // Create a stack and add root vertex
-            var stack = new StackLinkedList<T>();
+            var stack = new StackLinkedList<T>(1000);
             stack.Push(rootVertex);
 
             // As long as the stack is not empty:

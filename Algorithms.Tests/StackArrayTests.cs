@@ -7,48 +7,67 @@ namespace Algorithms.Tests
     [TestFixture]
     class StackArrayTests
     {
-        private StackArray<int> _q;
         private static readonly int MAX_SIZE = 1000;
-
-        [SetUp]
-        protected void SetUp()
-        {
-            _q = new StackArray<int>(MAX_SIZE);
-        }
 
         [Test]
         public void PushElements()
         {
+            var stack = new StackArray<int>(MAX_SIZE);
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Push(i);
+                stack.Push(i);
             }
         }
 
         [Test]
-        public void PushPopElements()
+        public void PopReturnsValue()
         {
+            var stack = new StackArray<int>(MAX_SIZE);
             for (int i = 0; i < MAX_SIZE; i++)
             {
-                _q.Push(i);
+                stack.Push(i);
             }
 
-            for (int i = MAX_SIZE - 1; i < 0; i--)
+            for (int i = MAX_SIZE - 1; i > 0; i--)
             {
-                Assert.AreEqual(i, _q.Pop());
+                Assert.AreEqual(i, stack.Pop());
             }
+        }
+
+        [Test]
+        public void PushPop()
+        {
+            var stack = new StackArray<int>(MAX_SIZE);
+            try
+            {
+                for (int i = 0; i < MAX_SIZE; i++)
+                {
+                    stack.Push(i);
+                }
+
+                for (int i = MAX_SIZE; i > 0; i--)
+                {
+                    stack.Pop();
+                }
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.Fail("Failed to pop all elements.");
+            }
+
         }
 
         [Test]
         public void StackOverflow()
         {
+            var stack = new StackArray<int>(MAX_SIZE);
             InvalidOperationException ex = new InvalidOperationException();
 
             try
             {
                 for (int i = 0; i < MAX_SIZE + 1; i++)
                 {
-                    _q.Push(i);
+                    stack.Push(i);
                 }
             }
             catch (InvalidOperationException e)
@@ -60,20 +79,21 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void StackUnderflow()
+        public void StackIsEmpty()
         {
+            var stack = new StackArray<int>(MAX_SIZE);
             InvalidOperationException ex = new InvalidOperationException();
 
             try
             {
                 for (int i = 0; i < MAX_SIZE; i++)
                 {
-                    _q.Push(i);
+                    stack.Push(i);
                 }
 
                 for (int i = 0; i < MAX_SIZE + 1; i++)
                 {
-                    _q.Pop();
+                    stack.Pop();
                 }
             }
             catch (InvalidOperationException e)
@@ -82,6 +102,41 @@ namespace Algorithms.Tests
             }
 
             Assert.AreEqual("The Stack is empty.", ex.Message);
+        }
+
+        [Test]
+        public void EmptyStackSizeIsZero()
+        {
+            var stack = new StackArray<int>(MAX_SIZE);
+            Assert.AreEqual(0, stack.Size());
+        }
+
+        [Test]
+        public void StackSizeIncreases()
+        {
+            var stack = new StackArray<int>(MAX_SIZE);
+            for (int i = 0; i < MAX_SIZE; i++)
+            {
+                stack.Push(i);
+            }
+            Assert.AreEqual(MAX_SIZE, stack.Size());
+        }
+
+        [Test]
+        public void StackSizeDecreases()
+        {
+            var stack = new StackArray<int>(MAX_SIZE);
+
+            for (int i = 0; i < MAX_SIZE; i++)
+            {
+                stack.Push(i);
+            }
+
+            for (int i = MAX_SIZE; i > 0; i--)
+            {
+                stack.Pop();
+            }
+            Assert.AreEqual(0, stack.Size());
         }
     }
 }
