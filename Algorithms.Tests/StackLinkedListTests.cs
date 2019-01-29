@@ -12,7 +12,7 @@ namespace Algorithms.Tests
         [Test]
         public void PushElements()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
             for (int i = 0; i < MAX_SIZE; i++)
             {
                 stack.Push(i);
@@ -22,7 +22,7 @@ namespace Algorithms.Tests
         [Test]
         public void PopReturnsValue()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
             for (int i = 0; i < MAX_SIZE; i++)
             {
                 stack.Push(i);
@@ -39,7 +39,7 @@ namespace Algorithms.Tests
         {
             try
             {
-                var stack = new StackLinkedList<int>(MAX_SIZE);
+                var stack = new StackLinkedList<int>();
                 for (int i = 0; i < MAX_SIZE; i++)
                 {
                     stack.Push(i);
@@ -58,30 +58,9 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void StackOverflow()
-        {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
-            InvalidOperationException ex = new InvalidOperationException();
-
-            try
-            {
-                for (int i = 0; i < MAX_SIZE + 1; i++)
-                {
-                    stack.Push(i);
-                }
-            }
-            catch (InvalidOperationException e)
-            {
-                ex = e;
-            }
-
-            Assert.AreEqual("Stack Overflow!", ex.Message);
-        }
-
-        [Test]
         public void StackIsEmpty()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
             InvalidOperationException ex = new InvalidOperationException();
 
             try
@@ -107,14 +86,14 @@ namespace Algorithms.Tests
         [Test]
         public void EmptyStackSizeIsZero()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
             Assert.AreEqual(0, stack.Size());
         }
 
         [Test]
         public void StackSizeIncreases()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
             for (int i = 0; i < MAX_SIZE; i++)
             {
                 stack.Push(i);
@@ -125,7 +104,7 @@ namespace Algorithms.Tests
         [Test]
         public void StackSizeDecreases()
         {
-            var stack = new StackLinkedList<int>(MAX_SIZE);
+            var stack = new StackLinkedList<int>();
 
             for (int i = 0; i < MAX_SIZE; i++)
             {

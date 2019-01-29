@@ -10,13 +10,7 @@ namespace Algorithms.DataStructures
     public class StackLinkedList<T>
     {
         private LinkedListNode<T> _head;
-        private readonly int _capacity;
         private int _size;
-
-        public StackLinkedList(int capacity)
-        {
-            this._capacity = capacity;
-        }
 
         /// <summary>
         /// Insert a new item. 
@@ -24,9 +18,6 @@ namespace Algorithms.DataStructures
         /// <param name="value"></param>
         public void Push(T value)
         {
-            if (_size == _capacity)
-                throw new InvalidOperationException("Stack Overflow!");
-
             var oldHead = _head;
             _head = new LinkedListNode<T>(value)
             {
@@ -52,14 +43,8 @@ namespace Algorithms.DataStructures
             return result;
         }
 
-        public bool IsEmpty()
-        {
-            return _head == null;
-        }
+        public bool IsEmpty() => _head == null;
 
-        public int Size()
-        {
-            return _size;
-        }
+        public int Size() => _size;
     }
 }

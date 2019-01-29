@@ -41,17 +41,13 @@ namespace Algorithms.DataStructures
                 throw new InvalidOperationException("The Stack is empty.");
 
             T value = _arr[--_head];
+            // Remove reference to an object (if reference type) when it is no longer needed. 
+            _arr[_head] = default(T);
             return value;
         }
 
-        public bool IsEmpty()
-        {
-            return _head == 0;
-        }
+        public bool IsEmpty() => _head == 0;
 
-        public int Size()
-        {
-            return _head;
-        }
+        public int Size() => _head;
     }
 }
