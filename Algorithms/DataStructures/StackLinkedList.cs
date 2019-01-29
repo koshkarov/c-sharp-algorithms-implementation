@@ -3,9 +3,11 @@
 namespace Algorithms.DataStructures
 {
     /// <summary>
-    /// Creates a new stack (linked list implementation) of arbitrary type <typeparamref name="T"/>
+    /// Creates a new stack (linked list implementation) of arbitrary type <typeparamref name="T"/>.
+    ///  - Every operation takes constant time in the worst case.
+    ///  - Uses extra time and space to deal with the links.
     /// </summary>
-    /// <typeparam name="T">The element type of the stack</typeparam>
+    /// <typeparam name="T">The element type of the stack.</typeparam>
     /// 
     public class StackLinkedList<T>
     {

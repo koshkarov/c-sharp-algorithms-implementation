@@ -3,20 +3,20 @@
 namespace Algorithms.DataStructures
 {
     /// <summary>
-    /// Creates a new stack (array implementation) of arbitrary type <typeparamref name="T"/>
+    /// Creates a new stack (resizing array implementation) of arbitrary type <typeparamref name="T"/>.
+    ///  - Every operation takes constant amortized time.
+    ///  - Less wasted space.
     /// </summary>
-    /// <typeparam name="T">The element type of the stack</typeparam>
+    /// <typeparam name="T">The element type of the stack.</typeparam>
     /// 
     public class StackArray<T>
     {
-        private readonly int _capacity;
-        private readonly T[] _arr;
-        private int _head = 0;
+        private T[] _arr;
+        private int _head;
 
-        public StackArray(int capacity)
+        public StackArray()
         {
-            _capacity = capacity;
-            _arr = new T[capacity];
+            _arr = new T[1];
         }
 
         /// <summary>
@@ -25,8 +25,11 @@ namespace Algorithms.DataStructures
         /// <param name="value"></param>
         public void Push(T value)
         {
-            if (_head == _capacity)
-                throw new InvalidOperationException("Stack Overflow!");
+            // if array is full resize it twice the size
+            if (_head == _arr.Length)
+            {
+                Resize(_arr.Length * 2);
+            }
 
             _arr[_head++] = value;
         }
@@ -41,13 +44,37 @@ namespace Algorithms.DataStructures
                 throw new InvalidOperationException("The Stack is empty.");
 
             T value = _arr[--_head];
+
             // Remove reference to an object (if reference type) when it is no longer needed. 
             _arr[_head] = default(T);
+
+            // Halve size of the array when it is one-quarter full.
+            if (_head > 0 && _head == _arr.Length / 4)
+            {
+                Resize(_arr.Length / 2);
+            }
+
             return value;
         }
 
         public bool IsEmpty() => _head == 0;
 
         public int Size() => _head;
+
+        /// <summary>
+        /// Resize array.
+        /// </summary>
+        /// <param name="size">A new size of the array.</param>
+        private void Resize(int size)
+        {
+            T[] resize = new T[size];
+
+            for (int i = 0; i < _head; i++)
+            {
+                resize[i] = _arr[i];
+            }
+
+            _arr = resize;
+        }
     }
 }
