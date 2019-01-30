@@ -11,7 +11,7 @@ namespace Algorithms.DataStructures
     /// 
     public class StackLinkedList<T>
     {
-        private LinkedListNode<T> _head;
+        private LinkedListNode<T> _first;
         private int _size;
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace Algorithms.DataStructures
         /// <param name="value"></param>
         public void Push(T value)
         {
-            var oldHead = _head;
-            _head = new LinkedListNode<T>(value)
+            var oldHead = _first;
+            _first = new LinkedListNode<T>(value)
             {
                 Next = oldHead
             };
@@ -34,18 +34,18 @@ namespace Algorithms.DataStructures
         /// <returns></returns>
         public T Pop()
         {
-            if (_head == null)
+            if (_first == null)
             {
                 throw new InvalidOperationException("The Stack is empty.");
             }
 
-            T result = _head.Value;
-            _head = _head.Next;
+            T result = _first.Value;
+            _first = _first.Next;
             _size--;
             return result;
         }
 
-        public bool IsEmpty() => _head == null;
+        public bool IsEmpty() => _first == null;
 
         public int Size() => _size;
     }

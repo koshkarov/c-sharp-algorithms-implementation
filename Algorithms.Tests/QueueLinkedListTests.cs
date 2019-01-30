@@ -7,61 +7,105 @@ namespace Algorithms.Tests
     [TestFixture]
     class QueueLinkedListTests
     {
-        private QueueLinkedList<int> _q;
-        private static readonly int MAX_SIZE = 1000;
-
-        [SetUp]
-        protected void SetUp()
-        {
-            _q = new QueueLinkedList<int>();
-        }
 
         [Test]
-        public void EnqueueElements()
+        public void MultipleEnqueueDequeueReturnValues()
         {
-            for (int i = 0; i < MAX_SIZE; i++)
+            var queue = new QueueLinkedList<int>();
+            var size = 50;
+
+            for (int i = 0; i < size; i++)
             {
-                _q.Enqueue(i);
+                queue.Enqueue(i);
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                var dequeued = queue.Dequeue();
+                Assert.AreEqual(i, dequeued);
             }
         }
 
         [Test]
-        public void EnqueueDequeueElements()
+        public void QueueUnderflow()
         {
-            for (int i = 0; i < MAX_SIZE; i++)
+            var queue = new QueueLinkedList<int>();
+            var size = 1000;
+
+            for (int i = 0; i < size; i++)
             {
-                _q.Enqueue(i);
+                queue.Enqueue(i);
             }
 
-            for (int i = MAX_SIZE - 1; i < 0; i--)
+            for (int i = 0; i < size; i++)
             {
-                Assert.AreEqual(i, _q.Dequeue());
+                queue.Dequeue();
             }
-        }
-
-        [Test]
-        public void QueueuUnderflow()
-        {
-            InvalidOperationException ex = new InvalidOperationException();
 
             try
             {
-                for (int i = 0; i < MAX_SIZE; i++)
-                {
-                    _q.Enqueue(i);
-                }
-
-                for (int i = 0; i < MAX_SIZE + 1; i++)
-                {
-                    _q.Dequeue();
-                }
+                queue.Dequeue();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException ex)
             {
-                ex = e;
+                Assert.AreEqual("The Queue is empty.", ex.Message);
             }
 
-            Assert.AreEqual("The Queueue is empty.", ex.Message);
+        }
+
+        [Test]
+        public void EmptyQueueDequeueUnderflow()
+        {
+            var queue = new QueueLinkedList<int>();
+
+            try
+            {
+                queue.Dequeue();
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("The Queue is empty.", ex.Message);
+            }
+        }
+
+        [Test]
+        public void EmptyQueueSizeIsZero()
+        {
+            var queue = new QueueLinkedList<int>();
+            Assert.AreEqual(0, queue.Size());
+        }
+
+        [Test]
+        public void QueueSizeIncreases()
+        {
+            var queue = new QueueLinkedList<int>();
+            var size = 100;
+
+            for (int i = 0; i < size; i++)
+            {
+                queue.Enqueue(i);
+            }
+
+            Assert.AreEqual(size, queue.Size());
+        }
+
+        [Test]
+        public void StackSizeDecreases()
+        {
+            var queue = new QueueLinkedList<int>();
+            var size = 100;
+
+            for (int i = 0; i < size; i++)
+            {
+                queue.Enqueue(i);
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                queue.Dequeue();
+            }
+
+            Assert.AreEqual(0, queue.Size());
         }
     }
 }

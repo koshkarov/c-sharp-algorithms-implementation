@@ -45,7 +45,7 @@ namespace Algorithms.DataStructures
 
             T value = _arr[--_head];
 
-            // Remove reference to an object (if reference type) when it is no longer needed. 
+            // Free object for garbage collector (for reference types)
             _arr[_head] = default(T);
 
             // Halve size of the array when it is one-quarter full.
