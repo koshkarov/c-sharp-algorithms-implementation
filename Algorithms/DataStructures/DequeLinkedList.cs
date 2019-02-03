@@ -1,115 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Algorithms.DataStructures
 {
-    public class DequeDoublyLinkedList<T>
+    public class Deque<T>
     {
-        private DoublyLinkedListNode<T> _first, _last;
-        private int _size;
+        private DoublyLinkedListNode<T> _sentinel;
 
-        public DequeDoublyLinkedList()
+        public int Size { get; private set; }
+
+        public Deque()
         {
-            _size = 0;
+            _sentinel = new DoublyLinkedListNode<T>(default(T));
+            _sentinel.Prev = _sentinel.Next = _sentinel;
         }
 
-        // add the item to the front
         public void AddFirst(T value)
         {
-            var newNode = new DoublyLinkedListNode<T>(value);
-
-            // check if not empty
-            if (IsEmpty())
+            var newNode = new DoublyLinkedListNode<T>(value)
             {
-                //if empty, create node and assign first and last to it
-                _first = newNode;
-                _last = newNode;
-            }
-            else
-            {
-                _first.Prev = newNode;
-                newNode.Next = _first;
-                _first = newNode;
-            }
+                Next = _sentinel.Next,
+                Prev = _sentinel
+            };
 
-            _size++;
+            _sentinel.Next.Prev = newNode;
+            _sentinel.Next = newNode;
+            
+
+            Size++;
         }
 
-        // add the item to the end
         public void AddLast(T value)
         {
-            var newNode = new DoublyLinkedListNode<T>(value);
-
-            // check if not empty
-            if (IsEmpty())
+            var newNode = new DoublyLinkedListNode<T>(value)
             {
-                //if empty, create node and assign first and last to it
-                _first = newNode;
-                _last = newNode;
-            }
-            else
-            {
-                //if not, create node and add to the end
-                newNode.Prev = _last;
-                _last.Next = newNode;
-                _last = newNode;
-            }
+                Prev = _sentinel.Prev,
+                Next = _sentinel
+            };
 
-            _size++;
+            _sentinel.Prev.Next = newNode;
+            _sentinel.Prev = newNode;
+
+            Size++;
         }
 
-        // remove and return the item from the front
         public T RemoveFirst()
         {
             ValidateDeque();
 
-            var value = _first.Value;
+            var value = _sentinel.Next.Value;
+            _sentinel.Next = _sentinel.Next.Next;
+            _sentinel.Next.Prev = _sentinel;
 
-            if (_first.Next == null)
-            {
-                _first = null;
-                _last = null;
-            }
-            else
-            {
-                _first = _first.Next;
-                _first.Prev = null;
-            }
-
-            _size--;
+            Size--;
             return value;
         }
 
-        // remove and return the item from the end
         public T RemoveLast()
         {
             ValidateDeque();
 
-            // get the value from the last node
-            var value = _last.Value;
+            var value = _sentinel.Prev.Value;
 
-            // if there is only one node reset pointers to null
-            if (_first.Next == null)
-            {
-                _first = null;
-                _last = null;
-            }
-            else
-            {
-                _last = _last.Prev;
-                _last.Next = null;
-            }
+            _sentinel.Prev = _sentinel.Prev.Prev;
+            _sentinel.Prev.Next = _sentinel;
 
-            _size--;
+            Size--;
             return value;
         }
 
 
-        public bool IsEmpty() => _first == null && _last == null;
-
-        public int Size() => _size;
+        public bool IsEmpty() => Size == 0;
 
         private void ValidateDeque()
         {
