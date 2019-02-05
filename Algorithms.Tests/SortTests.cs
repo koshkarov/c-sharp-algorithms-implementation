@@ -52,21 +52,6 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void TestMergeSortO()
-        {
-            var result = new int[Size];
-            Array.Copy(_unsorted, result, Size);
-
-            MergeSortO.Sort(result);
-
-            for (int i = 0; i < result.Length; i++)
-            {
-                Assert.AreEqual(i + 1, result[i]);
-            }
-
-        }
-
-        [Test]
         public void TestCountingSort()
         {
             var result = new int[Size];

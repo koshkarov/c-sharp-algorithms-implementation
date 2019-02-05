@@ -16,7 +16,7 @@ namespace Algorithms.Sort
     /// Average: Θ(n^2
     ///
     /// Cost model: space
-    /// Worst: Θ(1) auxiliary
+    /// Worst: O(1) auxiliary
     /// 
     /// </summary>
     public class SelectionSort

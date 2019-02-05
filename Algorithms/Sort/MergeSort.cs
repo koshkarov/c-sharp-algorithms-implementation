@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 
 namespace Algorithms.Sort
 {
     /// <summary>
-    /// Merge sort is an O(n log n) comparison-based sorting algorithm. Most
-    /// implementations produce a stable sort, which means that the implementation
-    /// preserves the input order of equal elements in the sorted output.
+    /// Merge sort (top-down) is a general-purpose, comparison-based sorting algorithm.
     ///
+    /// Stable: true
+    /// 
     /// Time complexity:
     /// Best: Ω(n log(n))
     /// Average: Θ(n log(n))
@@ -18,46 +17,41 @@ namespace Algorithms.Sort
     /// </summary>
     public class MergeSort {
 
-        public static T[] Sort<T>(T[] arr) where T : IComparable<T>
+        public static void Sort<T>(T[] a) where T : IComparable<T>
         {
-            int arrLength = arr.Length;
-
-            if (arrLength == 1)
-                return arr;
-
-            int middle = arrLength / 2;
-
-            T[] left = arr.Take(middle).ToArray();
-            T[] right = arr.Skip(middle).ToArray();
-
-            return Merge(Sort(left), Sort(right));
+            var aux = new T[a.Length];
+            Sort(a, aux, 0, a.Length - 1);
         }
 
-        private static T[] Merge<T>(T[] a, T[] b) where T : IComparable<T>
+        private static void Sort<T>(T[] a, T[] aux, int lo, int hi) where T : IComparable<T>
         {
-            int i = 0;
-            int j = 0;
+            if (hi <= lo) return;
+            int mid = lo + (hi - lo) / 2;
+            Sort(a, aux, lo, mid);
+            Sort(a, aux, mid + 1, hi);
+            Merge(a, aux, lo, mid, hi);
+        }
 
-            int aLength = a.Length;
-            int bLength = b.Length;
-
-            T[] resultArr = new T[aLength + bLength];
-
-            while (i < aLength || j < bLength)
+        private static void Merge<T>(T[] a, T[] aux, int lo, int mid, int hi) where T : IComparable<T>
+        {
+            // copy to aux[]
+            for (int k = lo; k <= hi; k++)
             {
-                if ( j == bLength || (i < aLength  && a[i].CompareTo(b[j]) <= 0))
-                {
-                    resultArr[i + j] = a[i];
-                    i++;
-                }
-                else
-                {
-                    resultArr[i + j] = b[j];
-                    j++;
-                }
+                aux[k] = a[k];
             }
 
-            return resultArr;
+            // merge back to a[]
+            int i = lo, j = mid + 1;
+            for (int k = lo; k <= hi; k++)
+            {
+                if (i > mid)
+                    a[k] = aux[j++];
+                else if (j > hi)
+                    a[k] = aux[i++];
+                else if (aux[j].CompareTo(aux[i]) < 0)
+                    a[k] = aux[j++];
+                else a[k] = aux[i++];
+            }
         }
     }
 }

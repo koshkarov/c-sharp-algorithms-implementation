@@ -1,18 +1,19 @@
 ﻿using Algorithms.DataStructures;
 using NUnit.Framework;
 using System;
+using System.Timers;
 
 namespace Algorithms.Tests
 {
     [TestFixture]
-    internal class DequeTests
+    internal class DoubleEndedQueueTests
     {
-        private const int Size = 50000;
+        private const int Size = 10000;
 
         [Test]
         public void MultipleAddFirstRemoveLast()
         {
-            var deque = new Deque<int>();
+            var deque = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
@@ -21,15 +22,15 @@ namespace Algorithms.Tests
 
             for (int i = 0; i < Size; i++)
             {
-                var dequedValue = deque.RemoveLast();
-                Assert.AreEqual(i, dequedValue);
+                var dequeuedValue = deque.RemoveLast();
+                Assert.AreEqual(i, dequeuedValue);
             }
         }
 
         [Test]
         public void MultipleAddFirstRemoveFirst()
         {
-            var deque = new Deque<int>();
+            var deque = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
@@ -38,15 +39,15 @@ namespace Algorithms.Tests
 
             for (int i = Size - 1; i >= 0; i--)
             {
-                var dequedValue = deque.RemoveFirst();
-                Assert.AreEqual(i, dequedValue);
+                var dequeuedValue = deque.RemoveFirst();
+                Assert.AreEqual(i, dequeuedValue);
             }
         }
 
         [Test]
         public void MultipleAddLastRemoveFirst()
         {
-            var deque = new Deque<int>();
+            var deque = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
@@ -55,25 +56,25 @@ namespace Algorithms.Tests
 
             for (int i = 0; i < Size; i++)
             {
-                var dequedValue = deque.RemoveFirst();
-                Assert.AreEqual(i, dequedValue);
+                var dequeuedValue = deque.RemoveFirst();
+                Assert.AreEqual(i, dequeuedValue);
             }
         }
 
         [Test]
         public void MultipleAddLastRemoveLast()
         {
-            var deque = new Deque<int>();
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
-                deque.AddLast(i);
+                doubleEndedQueue.AddLast(i);
             }
 
             for (int i = Size - 1; i >= 0; i--)
             {
-                var dequedValue = deque.RemoveLast();
-                Assert.AreEqual(i, dequedValue);
+                var dequeuedValue = doubleEndedQueue.RemoveLast();
+                Assert.AreEqual(i, dequeuedValue);
             }
         }
 
@@ -82,21 +83,21 @@ namespace Algorithms.Tests
         [Test]
         public void QueueUnderflow()
         {
-            var deque = new Deque<int>();
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
-                deque.AddFirst(i);
+                doubleEndedQueue.AddFirst(i);
             }
 
             for (int i = 0; i < Size; i++)
             {
-                deque.RemoveFirst();
+                doubleEndedQueue.RemoveFirst();
             }
 
             try
             {
-                deque.RemoveFirst();
+                doubleEndedQueue.RemoveFirst();
             }
             catch (InvalidOperationException ex)
             {
@@ -108,11 +109,11 @@ namespace Algorithms.Tests
         [Test]
         public void EmptyQueueDequeueUnderflow()
         {
-            var deque = new Deque<int>();
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
 
             try
             {
-                deque.RemoveLast();
+                doubleEndedQueue.RemoveLast();
             }
             catch (InvalidOperationException ex)
             {
@@ -123,39 +124,57 @@ namespace Algorithms.Tests
         [Test]
         public void EmptyDequeSizeIsZero()
         {
-            var deque = new Deque<int>();
-            Assert.AreEqual(0, deque.Size);
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
+            Assert.AreEqual(0, doubleEndedQueue.Size);
         }
 
         [Test]
         public void DequeSizeIncreases()
         {
-            var deque = new Deque<int>();
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
-                deque.AddLast(i);
+                doubleEndedQueue.AddLast(i);
             }
 
-            Assert.AreEqual(Size, deque.Size);
+            Assert.AreEqual(Size, doubleEndedQueue.Size);
         }
 
         [Test]
         public void DequeSizeDecreases()
         {
-            var deque = new Deque<int>();
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
 
             for (int i = 0; i < Size; i++)
             {
-                deque.AddLast(i);
+                doubleEndedQueue.AddLast(i);
             }
 
             for (int i = 0; i < Size; i++)
             {
-                deque.RemoveFirst();
+                doubleEndedQueue.RemoveFirst();
             }
 
-            Assert.AreEqual(0, deque.Size);
+            Assert.AreEqual(0, doubleEndedQueue.Size);
+        }
+
+        [Test]
+        public void DequeueSearch()
+        {
+            var doubleEndedQueue = new DoubleEndedQueue<int>();
+
+            for (int i = 0; i < Size; i++)
+            {
+                doubleEndedQueue.AddFirst(i);
+            }
+
+            for (int i = 0; i < Size; i++)
+            {
+                var result = doubleEndedQueue.Search(i);
+                Assert.AreEqual(i, result.Value);
+            }
+
         }
     }
 }

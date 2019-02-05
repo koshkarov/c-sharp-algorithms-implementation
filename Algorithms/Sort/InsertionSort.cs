@@ -7,14 +7,14 @@ namespace Algorithms.Sort
     /// sorted array(or list) is built one entry at a time.
     ///
     /// Stable: yes
-    /// 
-    /// Time complexity:
+    /// Cost model: compares
+    ///
+    /// Worst: O(n^2)
     /// Best: Ω(n)
     /// Average: Θ(n^2)
-    /// Worst: O(n^2)
     ///
-    /// Space Complexity:
-    /// Worst: O(1)
+    /// Cost model: space
+    /// Worst: O(n) total, O(1) auxiliary
     /// </summary>
     public class InsertionSort
     {
