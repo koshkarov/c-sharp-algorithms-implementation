@@ -27,7 +27,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = InsertionSort.Sort(result);
+            InsertionSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -42,7 +42,22 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = MergeSort.Sort(result);
+            MergeSort.Sort(result);
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                Assert.AreEqual(i + 1, result[i]);
+            }
+
+        }
+
+        [Test]
+        public void TestMergeSortO()
+        {
+            var result = new int[Size];
+            Array.Copy(_unsorted, result, Size);
+
+            MergeSortO.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -57,7 +72,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = CountingSort.Sort(result);
+            CountingSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -72,7 +87,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = BubbleSort.Sort(result);
+            BubbleSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -87,7 +102,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = HeapSort.Sort(result);
+            HeapSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -102,7 +117,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = QuickSort.Sort(result);
+            QuickSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -117,7 +132,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = RadixSort.Sort(result, RadixSort.RadixSortType.Lsd);
+            RadixSort.Sort(result, RadixSort.RadixSortType.Lsd);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -132,7 +147,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = SelectionSort.Sort(result);
+            SelectionSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
@@ -147,7 +162,7 @@ namespace Algorithms.Tests
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            result = ShellSort.Sort(result);
+            ShellSort.Sort(result);
 
             for (int i = 0; i < result.Length; i++)
             {
