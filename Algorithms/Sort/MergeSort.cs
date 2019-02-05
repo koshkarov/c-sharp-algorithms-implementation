@@ -1,4 +1,5 @@
 ﻿using System;
+using Algorithms.Sort.Enums;
 
 namespace Algorithms.Sort
 {
@@ -17,10 +18,30 @@ namespace Algorithms.Sort
     /// </summary>
     public class MergeSort {
 
-        public static void Sort<T>(T[] a) where T : IComparable<T>
+        public static void Sort<T>(T[] a, MergeSortType type = MergeSortType.TopDown) where T : IComparable<T>
         {
             var aux = new T[a.Length];
+            if (type == MergeSortType.TopDown)
+                SortTopDown(a, aux);
+            else
+                SortBottomUp(a, aux);
+        }
+
+        private static void SortTopDown<T>(T[] a, T[] aux) where T : IComparable<T>
+        {
             Sort(a, aux, 0, a.Length - 1);
+        }
+
+        private static void SortBottomUp<T>(T[] a, T[] aux) where T : IComparable<T>
+        {
+            var len = a.Length;
+            for (int sz = 1; sz < len; sz = sz + sz)
+            {
+                for (int lo = 0; lo < len - sz; lo += sz + sz)
+                {
+                    Merge(a, aux, lo, lo + sz - 1, Math.Min(lo + sz + sz - 1, len - 1));
+                }
+            }
         }
 
         private static void Sort<T>(T[] a, T[] aux, int lo, int hi) where T : IComparable<T>

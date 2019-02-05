@@ -1,13 +1,14 @@
 ﻿using Algorithms.Sort;
 using NUnit.Framework;
 using System;
+using Algorithms.Sort.Enums;
 
 namespace Algorithms.Tests
 {
     [TestFixture]
     class SortTests
     {
-        private const int Size = 100;
+        private const int Size = 10000;
         private static int[] _unsorted;
 
         [SetUp]
@@ -37,12 +38,27 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void TestMergeSort()
+        public void TestMergeSortTopDown()
         {
             var result = new int[Size];
             Array.Copy(_unsorted, result, Size);
 
-            MergeSort.Sort(result);
+            MergeSort.Sort(result, MergeSortType.TopDown);
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                Assert.AreEqual(i + 1, result[i]);
+            }
+
+        }
+
+        [Test]
+        public void TestMergeSortBottomUp()
+        {
+            var result = new int[Size];
+            Array.Copy(_unsorted, result, Size);
+
+            MergeSort.Sort(result, MergeSortType.BottomUp);
 
             for (int i = 0; i < result.Length; i++)
             {
