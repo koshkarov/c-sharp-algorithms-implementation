@@ -1,4 +1,4 @@
-# C# Algorithms Implementation
+# C# Algorithms Implementation :)
 
 This project contains a C# implementation of the algorithms and data structures. 
 
