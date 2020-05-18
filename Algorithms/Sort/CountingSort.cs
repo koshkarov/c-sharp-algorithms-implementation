@@ -15,7 +15,8 @@
     /// Space Complexity
     /// Worst: O(k)
     /// </summary>
-    public class CountingSort {
+    public class CountingSort
+    {
 
         public static int[] Sort(int[] unsorted)
         {
@@ -66,6 +67,5 @@
             }
             return max;
         }
-
     }
 }

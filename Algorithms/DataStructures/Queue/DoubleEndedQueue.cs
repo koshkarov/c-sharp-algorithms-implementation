@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Algorithms.DataStructures
+namespace Algorithms.DataStructures.Queue
 {
     /// <summary>
     /// Dequeue is an abstract data type that generalizes a queue,

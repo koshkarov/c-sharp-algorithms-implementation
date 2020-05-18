@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Algorithms.DataStructures
+namespace Algorithms.DataStructures.Stack
 {
     /// <summary>
     /// Creates a new stack (linked list implementation) of arbitrary type <typeparamref name="T"/>.

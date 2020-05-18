@@ -1,10 +1,11 @@
-﻿using Algorithms.Graph;
+﻿using Algorithms.DataStructures.Graph.AdjacencyList;
+using Algorithms.Graph;
 using NUnit.Framework;
 
 namespace Algorithms.Tests
 {
     [TestFixture]
-    class BreadtFirstSearchTests
+    class BreadthFirstSearchTests
     {
         private int[][] _graph;
         private BfsVertexInfo<int?>[] _bfsInfo;

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
 
-namespace Algorithms.DataStructures
+namespace Algorithms.DataStructures.Queue
 {
     /// <summary>
     /// Creates a new queue (linked list implementation) of arbitrary type <typeparamref name="T"/>

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Algorithms.DataStructures
 {
+    /// <summary>
+    /// HashTable implementation. If collision happents the LinkedList data structures is used to store the elements. 
+    /// </summary>
+    /// <typeparam name="TK">Key</typeparam>
+    /// <typeparam name="TV">Value</typeparam>
     public class HashTable<TK, TV>
     {
         private readonly int _size;
@@ -14,18 +19,24 @@ namespace Algorithms.DataStructures
             _items = new DoublyLinkedListNode<KeyValuePair<TK, TV>>[size];
         }
 
+        /// <summary>
+        /// Gets and sets elements to the HashMap.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public TV this[TK key]
         {
             get
             {
                 var currentNode = _items[GetHashValue(key)];
 
-                if (currentNode == null)
-                    return default(TV);
-
+                // iterate through linked list to find the key
                 while (currentNode != null)
                 {
                     var keyValuePair = currentNode.Value;
+
+                    // for the sake of simplicity we compare using Equal(). 
+                    // TODO: do some research how to properly compare
                     if (keyValuePair.Key.Equals(key))
                     {
                         return keyValuePair.Value;
@@ -33,7 +44,8 @@ namespace Algorithms.DataStructures
                     currentNode = currentNode.Next;
                 }
 
-                return default(TV);
+                // there was no ll nodes at all or we couldn't fine the key
+                return default;
             }
             set
             {
@@ -110,7 +122,7 @@ namespace Algorithms.DataStructures
         }
 
         /// <summary>
-        ///  Finds the position of the element in the hash table. 
+        /// Finds the position of the element in the hash table. 
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>

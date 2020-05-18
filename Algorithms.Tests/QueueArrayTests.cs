@@ -1,4 +1,4 @@
-﻿using Algorithms.DataStructures;
+﻿using Algorithms.DataStructures.Queue;
 using NUnit.Framework;
 using System;
 

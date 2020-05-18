@@ -1,9 +1,9 @@
-﻿using Algorithms.Graph;
+﻿using Algorithms.DataStructures.Graph;
+using Algorithms.DataStructures.Graph.AdjacencyList;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Algorithms.DataStructures.Graph;
 
 namespace Algorithms.Tests
 {

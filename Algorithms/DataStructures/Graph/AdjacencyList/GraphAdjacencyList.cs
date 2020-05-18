@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Algorithms.DataStructures.Graph.AdjacencyList;
+using Algorithms.DataStructures.Queue;
+using Algorithms.DataStructures.Stack;
+using System;
 using System.Collections.Generic;
-using Algorithms.Graph;
 
 namespace Algorithms.DataStructures.Graph
 {
@@ -12,71 +14,73 @@ namespace Algorithms.DataStructures.Graph
     /// <typeparam name="T"></typeparam>
     public class GraphAdjacencyList<T>
     {
-        public Dictionary<T, HashSet<T>> AdjacencyList { get; } = new Dictionary<T, HashSet<T>>();
+        private readonly Dictionary<T, HashSet<T>> _aList;
         private readonly GraphType _graphType;
-
-        public GraphAdjacencyList() : this(GraphType.Undirected)
-        {
-        }
 
         public GraphAdjacencyList(GraphType type)
         {
             _graphType = type;
+            _aList = new Dictionary<T, HashSet<T>>();
+        }
+
+        public GraphAdjacencyList() : this(GraphType.Undirected)
+        {
+            
         }
 
         public void AddEdge(T source, T destination)
         {
-            if (AdjacencyList.ContainsKey(source))
+            if (_aList.ContainsKey(source))
             {
-                AdjacencyList[source].Add(destination);
+                _aList[source].Add(destination);
             }
             else
             {
-                AdjacencyList[source] = new HashSet<T>() { destination };
+                _aList[source] = new HashSet<T>() { destination };
             }
             
             if (_graphType == GraphType.Undirected)
             {
-                if (AdjacencyList.ContainsKey(destination))
+                if (_aList.ContainsKey(destination))
                 {
-                    AdjacencyList[destination].Add(source);
+                    _aList[destination].Add(source);
                 }
                 else
                 {
-                    AdjacencyList[destination] = new HashSet<T>() { source };
+                    _aList[destination] = new HashSet<T>() { source };
                 }
             }
         }
 
         public void AddEdges(T source, HashSet<T> destinations)
         {
-            if (AdjacencyList.ContainsKey(source))
+            if (_aList.ContainsKey(source))
             {
                 foreach (var destination in destinations)
-                    AdjacencyList[source].Add(destination);
+                    _aList[source].Add(destination);
             }
             else
             {
-                AdjacencyList[source] = destinations;
+                _aList[source] = destinations;
             }
                 
             if (_graphType == GraphType.Undirected)
             {
                 foreach (var destination in destinations)
                 {
-                    if (AdjacencyList.ContainsKey(destination))
-                        AdjacencyList[destination].Add(source);
+                    if (_aList.ContainsKey(destination))
+                        _aList[destination].Add(source);
                     else
-                        AdjacencyList[destination] = new HashSet<T>() { source };
+                        _aList[destination] = new HashSet<T>() { source };
                 }
             }
         }
 
         public HashSet<T> Neighbors(T source)
         {
-            if (AdjacencyList.ContainsKey(source))
+            if (_aList.ContainsKey(source))
             {
-                return AdjacencyList[source];
+                return _aList[source];
             }
             return default(HashSet<T>);
         }
@@ -92,11 +96,11 @@ namespace Algorithms.DataStructures.Graph
             // Traversed graph information
             var visitedVerticesInfo = new Dictionary<T, BfsVertexInfo<T>>();
 
-            if (!AdjacencyList.ContainsKey(rootVertex))
+            if (!_aList.ContainsKey(rootVertex))
                 return visitedVerticesInfo;
 
             // Initialize it
-            foreach (var i in AdjacencyList)
+            foreach (var i in _aList)
             {
                 visitedVerticesInfo[i.Key] = new BfsVertexInfo<T>();
             }
@@ -119,7 +123,7 @@ namespace Algorithms.DataStructures.Graph
                 preVisit?.Invoke(vertex);
 
                 // For each neighbor v of u that has not been visited:
-                foreach (var neighbor in AdjacencyList[vertex])
+                foreach (var neighbor in _aList[vertex])
                 {
                     if (visitedVerticesInfo[neighbor].Distance == null)
                     {
@@ -149,7 +153,7 @@ namespace Algorithms.DataStructures.Graph
             // Traversed graph information
             var visitedVerticesInfo = new HashSet<T>();
 
-            if (!AdjacencyList.ContainsKey(rootVertex))
+            if (!_aList.ContainsKey(rootVertex))
                 return visitedVerticesInfo;
 
             // Create a stack and add root vertex
@@ -173,7 +177,7 @@ namespace Algorithms.DataStructures.Graph
                 visitedVerticesInfo.Add(vertex);
 
                 // For each neighbor v of u that has not been visited:
-                foreach (var neighbor in AdjacencyList[vertex])
+                foreach (var neighbor in _aList[vertex])
                     if (!visitedVerticesInfo.Contains(neighbor))
                         // Push v
                         stack.Push(neighbor);
@@ -208,7 +212,7 @@ namespace Algorithms.DataStructures.Graph
         public void PrintAllPaths(T source, T destination)
         {
             var visited = new Dictionary<T, bool>();
-            foreach (var pair in AdjacencyList)
+            foreach (var pair in _aList)
             {
                 visited[pair.Key] = new bool();
             }
@@ -229,7 +233,7 @@ namespace Algorithms.DataStructures.Graph
                 Console.WriteLine();
             }
 
-            foreach (T vertex in AdjacencyList[sourceVertex])
+            foreach (T vertex in _aList[sourceVertex])
             {
                 if (!visited[vertex])
                 {

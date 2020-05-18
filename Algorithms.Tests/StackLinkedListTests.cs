@@ -1,4 +1,4 @@
-﻿using Algorithms.DataStructures;
+﻿using Algorithms.DataStructures.Stack;
 using NUnit.Framework;
 using System;
 

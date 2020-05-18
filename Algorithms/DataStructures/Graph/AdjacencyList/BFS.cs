@@ -1,9 +1,17 @@
-﻿using Algorithms.DataStructures;
+﻿using Algorithms.DataStructures.Graph.AdjacencyList;
+using Algorithms.DataStructures.Queue;
 
 namespace Algorithms.Graph
 {
     public class BFS
     {
+
+        /// <summary>
+        /// TODO: Add a description what is going on here
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static BfsVertexInfo<int?>[] DoBfs(int[][] graph, int source)
         {
             BfsVertexInfo<int?>[] bfsInfo = new BfsVertexInfo<int?>[graph.Length];
@@ -40,11 +48,5 @@ namespace Algorithms.Graph
 
             return bfsInfo;
         }
-    }
-
-    public class BfsVertexInfo<T>
-    {
-        public int? Distance { get; set; }
-        public T Predecessor { get; set; }
     }
 }
