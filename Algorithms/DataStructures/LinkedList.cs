@@ -1,5 +1,9 @@
 ﻿namespace Algorithms.DataStructures
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     class LinkedList<T>
     {
         private LinkedListNode<T> _head;

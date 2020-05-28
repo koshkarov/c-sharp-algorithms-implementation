@@ -3,7 +3,7 @@
 namespace Algorithms.DataStructures.Queue
 {
     /// <summary>
-    /// Dequeue is an abstract data type that generalizes a queue,
+    /// Double Ended Queue or Dequeue is an abstract data type that generalizes a queue,
     /// for which elements can be added to or removed from either the front (head) or back (tail).
     /// It is implemented with a circular, doubly-linked list which has a single sentinel.
     /// </summary>
