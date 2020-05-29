@@ -14,11 +14,10 @@ namespace Algorithms.DataStructures
     /// </summary>
     public class BinarySearchTree
     {
-        public BinaryTreeNode<int> Root { get; set; }
+        public BinaryTreeNode<int> Root { get; private set; }
 
         public BinarySearchTree()
         {
-            Root = null;
         }
 
         public BinarySearchTree(BinaryTreeNode<int> root)
@@ -74,51 +73,34 @@ namespace Algorithms.DataStructures
             return curNode;
         }
 
-        public void Insert(int key)
+        public void Insert(int key, bool isIterative = false)
         {
-            var insertNode = new BinaryTreeNode<int>(key);
-
-            // case if binary tree is empty
-            if (Root == null)
-            {
-                Root = insertNode;
-                return;
-            } 
-            else
-            {
-                Insert(Root, insertNode);
-            }
+            Root = isIterative 
+                ? InsertIteratively(Root, key)
+                : InsertRecursively(Root, key);
         }
 
-        private void Insert(BinaryTreeNode<int> currentNode, BinaryTreeNode<int> insertNode)
+        private BinaryTreeNode<int> InsertIteratively(BinaryTreeNode<int> root, int v)
         {
-            var queue = new Queue<BinaryTreeNode<int>>();
-            queue.Enqueue(currentNode);
+            throw new NotImplementedException();
+        }
 
-            while(queue.Count != 0)
+        private BinaryTreeNode<int> InsertRecursively(BinaryTreeNode<int> node, int v)
+        {
+            if (node == null)
             {
-                var tempNode = queue.Dequeue();
-
-                if (tempNode.Left == null)
-                {
-                    tempNode.Left = insertNode;
-                    break;
-                }
-                else
-                {
-                    queue.Enqueue(tempNode.Left);
-                }
-
-                if (tempNode.Right == null)
-                {
-                    tempNode.Right = insertNode;
-                    break;
-                }
-                else
-                {
-                    queue.Enqueue(tempNode.Right);
-                }
+                node = new BinaryTreeNode<int>(v);
             }
+            else if (v < node.Value)
+            {
+                node.Left = InsertRecursively(node.Left, v);
+            }
+            else
+            {
+                node.Right = InsertRecursively(node.Right, v);
+            }
+
+            return node;
         }
 
         public void Delete()

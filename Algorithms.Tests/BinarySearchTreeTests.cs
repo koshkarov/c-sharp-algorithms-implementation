@@ -1,5 +1,6 @@
 ﻿using Algorithms.DataStructures;
 using Algorithms.Extensions;
+using Algorithms.Tests.Helpers;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using System.ComponentModel.DataAnnotations;
@@ -16,39 +17,33 @@ namespace Algorithms.Tests
         protected void SetUp()
         {
             // Valid Binary Search Tree
-            bstValid = new BinarySearchTree
+            bstValid = new BinarySearchTree(new BinaryTreeNode<int>(4)
             {
-                Root = new BinaryTreeNode<int>(4)
+                Left = new BinaryTreeNode<int>(2)
                 {
-                    Left = new BinaryTreeNode<int>(2)
-                    {
-                        Left = new BinaryTreeNode<int>(1),
-                        Right = new BinaryTreeNode<int>(3)
-                    },
-                    Right = new BinaryTreeNode<int>(6)
-                    {
-                        Right = new BinaryTreeNode<int>(7),
-                        Left = new BinaryTreeNode<int>(5)
-                    }
+                    Left = new BinaryTreeNode<int>(1),
+                    Right = new BinaryTreeNode<int>(3)
+                },
+                Right = new BinaryTreeNode<int>(6)
+                {
+                    Right = new BinaryTreeNode<int>(7),
+                    Left = new BinaryTreeNode<int>(5)
                 }
-            };
+            });
 
             // Invlid Binary Search Tree
-            bstInvalid = new BinarySearchTree
+            bstInvalid = new BinarySearchTree(new BinaryTreeNode<int>(3)
             {
-                Root = new BinaryTreeNode<int>(3)
+                Left = new BinaryTreeNode<int>(2)
                 {
-                    Left = new BinaryTreeNode<int>(2)
-                    {
-                        Left = new BinaryTreeNode<int>(1)
-                    },
-                    Right = new BinaryTreeNode<int>(5)
-                    {
-                        Right = new BinaryTreeNode<int>(1),
-                        Left = new BinaryTreeNode<int>(6)
-                    }
+                    Left = new BinaryTreeNode<int>(1)
+                },
+                Right = new BinaryTreeNode<int>(5)
+                {
+                    Right = new BinaryTreeNode<int>(1),
+                    Left = new BinaryTreeNode<int>(6)
                 }
-            };
+            });
         }
 
         [Test]
@@ -64,8 +59,12 @@ namespace Algorithms.Tests
             }
 
             // assert
-            var rootNode = bst.Root;
-            Assert.IsTrue(rootNode.IsBinarySerchTree());
+            var tempNode = bst.Root;
+            for (int i = 0; i < 100; i++)
+            {
+                Assert.IsTrue(tempNode.Value == i);
+                tempNode = tempNode.Right;
+            }
         }
 
         [Test]
@@ -81,8 +80,12 @@ namespace Algorithms.Tests
             }
 
             // assert
-            var rootNode = bst.Root;
-            Assert.IsTrue(rootNode.IsBinarySerchTree());
+            var tempNode = bst.Root;
+            for (int i = 100; i > 0; i--)
+            {
+                Assert.IsTrue(tempNode.Value == i);
+                tempNode = tempNode.Left;
+            }
         }
 
         [Test]
@@ -135,15 +138,6 @@ namespace Algorithms.Tests
         public void IsBinarySearchTreeTraversalInvalid()
         {
             Assert.AreEqual(false, bstInvalid.IsBinarySearchTreeTraversal());
-        }
-
-        [Test]
-        public void ContainsKeyRecursive()
-        {
-            for (int i = 1; i < 8; i++)
-            {
-                Assert.AreEqual(true, bstValid.Contains(i));
-            }
         }
 
         [Test]
