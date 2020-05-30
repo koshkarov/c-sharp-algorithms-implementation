@@ -76,7 +76,7 @@ namespace Algorithms.Tests
 
         }
 
-        [Test]
+        [Test, Ignore("Not Implemented")]
         public void TestCountingSort()
         {
             var result = new int[_size];
@@ -91,7 +91,7 @@ namespace Algorithms.Tests
 
         }
 
-        [Test]
+        [Test, Ignore("Not Implemented")]
         public void TestBubbleSort()
         {
             var result = new int[_size];
@@ -106,7 +106,7 @@ namespace Algorithms.Tests
 
         }
 
-        [Test]
+        [Test, Ignore("Not Implemented")]
         public void TestHeapSort()
         {
             var result = new int[_size];
@@ -136,7 +136,7 @@ namespace Algorithms.Tests
 
         }
 
-        [Test]
+        [Test, Ignore("Not Implemented")]
         public void TestRadixSort()
         {
             var result = new int[_size];
@@ -166,7 +166,7 @@ namespace Algorithms.Tests
 
         }
 
-        [Test]
+        [Test, Ignore("Not Implemented")]
         public void TestShellSort()
         {
             var result = new int[_size];

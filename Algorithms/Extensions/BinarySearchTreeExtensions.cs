@@ -1,4 +1,5 @@
 ﻿using Algorithms.DataStructures;
+using System;
 
 namespace Algorithms.Extensions
 {
@@ -6,6 +7,8 @@ namespace Algorithms.Extensions
     {
         public static bool IsBinarySerchTree(this BinaryTreeNode<int> node)
         {
+            if (node == null) throw new NullReferenceException("BinarySearchTree is empty.");
+
             return IsBinarySearchTree(node, int.MinValue, int.MaxValue);
         }
 

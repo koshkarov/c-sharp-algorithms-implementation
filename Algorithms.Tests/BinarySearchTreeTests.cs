@@ -93,9 +93,10 @@ namespace Algorithms.Tests
         public void Insert_BalancedKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
         {
             // arrange
-            var balancedValues = new int[100];
+            var iterations = 100;
+            var balancedValues = new int[iterations];
 
-            for (int i = 0; i < 100; i++) 
+            for (int i = 0; i < iterations; i++) 
                 balancedValues[i] = i;
 
             balancedValues.Shuffle();
