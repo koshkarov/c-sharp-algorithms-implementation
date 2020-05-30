@@ -80,24 +80,55 @@ namespace Algorithms.DataStructures
                 : InsertRecursively(Root, key);
         }
 
-        private BinaryTreeNode<int> InsertIteratively(BinaryTreeNode<int> root, int v)
+        private BinaryTreeNode<int> InsertIteratively(BinaryTreeNode<int> node, int key)
         {
-            throw new NotImplementedException();
+            if (node == null) return new BinaryTreeNode<int>(key);
+
+            var curNode = node;
+            while (curNode != null)
+            {
+                if (key > curNode.Value)
+                {
+                    if (curNode.Right == null)
+                    {
+                        curNode.Right = new BinaryTreeNode<int>(key);
+                        break;
+                    } 
+                    else
+                    {
+                        curNode = curNode.Right;
+                    }
+                }
+                else // key < curNode.Value
+                {
+                    if (curNode.Left == null)
+                    {
+                        curNode.Left = new BinaryTreeNode<int>(key);
+                        break;
+                    }
+                    else
+                    {
+                        curNode = curNode.Left;
+                    }
+                }
+            }
+
+            return Root;
         }
 
-        private BinaryTreeNode<int> InsertRecursively(BinaryTreeNode<int> node, int v)
+        private BinaryTreeNode<int> InsertRecursively(BinaryTreeNode<int> node, int key)
         {
             if (node == null)
             {
-                node = new BinaryTreeNode<int>(v);
+                node = new BinaryTreeNode<int>(key);
             }
-            else if (v < node.Value)
+            else if (key < node.Value)
             {
-                node.Left = InsertRecursively(node.Left, v);
+                node.Left = InsertRecursively(node.Left, key);
             }
             else
             {
-                node.Right = InsertRecursively(node.Right, v);
+                node.Right = InsertRecursively(node.Right, key);
             }
 
             return node;

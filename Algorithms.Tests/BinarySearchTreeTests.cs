@@ -47,20 +47,20 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void Insert_IncrementalKeys_BuildsCorrectTree()
+        public void Insert_IncrementalKeys_BuildsCorrectTree([Values(true, false)]bool isIterative)
         {
             // arrange 
             var bst = new BinarySearchTree();
-
+            var iterations = 100;
             // act
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < iterations; i++)
             {
-                bst.Insert(i);
+                bst.Insert(i, isIterative);
             }
 
             // assert
             var tempNode = bst.Root;
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < iterations; i++)
             {
                 Assert.IsTrue(tempNode.Value == i);
                 tempNode = tempNode.Right;
@@ -68,20 +68,21 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void Insert_DecrementalKeys_BuildsCorrectTree()
+        public void Insert_DecrementalKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
         {
             // arrange
             var bst = new BinarySearchTree();
+            var iterations = 5;
 
             // act
-            for (int i = 100; i > 0; i--)
+            for (int i = iterations; i > 0; i--)
             {
-                bst.Insert(i);
+                bst.Insert(i, isIterative);
             }
 
             // assert
             var tempNode = bst.Root;
-            for (int i = 100; i > 0; i--)
+            for (int i = iterations; i > 0; i--)
             {
                 Assert.IsTrue(tempNode.Value == i);
                 tempNode = tempNode.Left;
@@ -89,7 +90,7 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void Insert_BalancedKeys_BuildsCorrectTree()
+        public void Insert_BalancedKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
         {
             // arrange
             var balancedValues = new int[100];
@@ -104,7 +105,7 @@ namespace Algorithms.Tests
             // act
             foreach (var item in balancedValues)
             {
-                bst.Insert(item);
+                bst.Insert(item, isIterative);
             }
 
             // assert
@@ -141,20 +142,11 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void ContainsKeyRecursive()
+        public void ContainsKey([Values(true, false)] bool isIterative)
         {
             for (int i = 1; i < 8; i++)
             {
-                Assert.AreEqual(true, bstValid.Contains(i));
-            }
-        }
-
-        [Test]
-        public void ContainsKeyIterative()
-        {
-            for (int i = 1; i < 8; i++)
-            {
-                Assert.AreEqual(true, bstValid.Contains(key: i, isIterative: true));
+                Assert.AreEqual(true, bstValid.Contains(i, isIterative));
             }
         }
 
