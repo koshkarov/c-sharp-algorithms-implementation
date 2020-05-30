@@ -15,7 +15,7 @@
     /// Space Complexity
     /// Worst: O(k)
     /// </summary>
-    public class CountingSort
+    public static class CountingSort
     {
 
         public static int[] Sort(int[] unsorted)

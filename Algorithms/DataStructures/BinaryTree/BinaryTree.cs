@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 
-namespace Algorithms.DataStructures
+namespace Algorithms.DataStructures.BinaryTree
 {
     /// <summary>
     /// A binary tree is a non linear data structure where each node can have at most 2 child nodes. 
@@ -30,19 +32,28 @@ namespace Algorithms.DataStructures
 
         public bool Contains(int key)
         {
-            return Search(Root, key) != null;
+            throw new NotImplementedException();
         }
 
-        private BinaryTreeNode<int> Search(BinaryTreeNode<int> node, int key)
-        {
-            if (node == null || node.Value == key)
-                return node;
-            if (key > node.Value)
-                return Search(node.Right, key);
-            if (key < node.Value)
-                return Search(node.Left, key);
 
-            return node;
+
+        // TODO: What is this looking for?
+        public bool FindTarget(int key)
+        {
+            return Find(Root, key, new HashSet<int>());
+        }
+
+        private bool Find(BinaryTreeNode<int> binaryTreeNode, int key, HashSet<int> set)
+        {
+            if (binaryTreeNode == null)
+                return false;
+
+            if (set.Contains(key - binaryTreeNode.Value))
+                return true;
+
+            set.Add(binaryTreeNode.Value);
+
+            return Find(binaryTreeNode.Left, key, set) || Find(binaryTreeNode.Right, key, set);
         }
 
         /// <summary>

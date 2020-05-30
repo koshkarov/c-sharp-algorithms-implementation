@@ -34,7 +34,7 @@ namespace Algorithms.DataStructures.UnionFind
                 throw new ArgumentOutOfRangeException($"Matrix can't be a size of {n}");
 
             _gridSize = n;
-            _grid = new int[n,n]; // by default all sites are marked as 0 (blocked)
+            _grid = new int[n, n]; // by default all sites are marked as 0 (blocked)
 
             // Create sites (+ 2 virtual sites
             var x = n * n + 2;

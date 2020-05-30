@@ -1,9 +1,7 @@
-﻿using Algorithms.DataStructures;
+﻿using Algorithms.DataStructures.BinarySearchTree;
+using Algorithms.DataStructures.BinaryTree;
 using Algorithms.Extensions;
-using Algorithms.Tests.Helpers;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using System.ComponentModel.DataAnnotations;
 
 namespace Algorithms.Tests
 {
@@ -72,7 +70,7 @@ namespace Algorithms.Tests
         {
             // arrange
             var bst = new BinarySearchTree();
-            var iterations = 5;
+            var iterations = 100;
 
             // act
             for (int i = iterations; i > 0; i--)
@@ -152,10 +150,9 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void DoesNotContainKey()
+        public void DoesNotContainKey([Values(true, false)] bool isIterative)
         {
-            Assert.AreEqual(false, bstValid.Contains(8));
-
+            Assert.AreEqual(false, bstValid.Contains(8, isIterative));
         }
 
         [Test]

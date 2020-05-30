@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Algorithms.DataStructures.BinaryTree;
 using System.Collections.Generic;
 
-namespace Algorithms.DataStructures
+namespace Algorithms.DataStructures.BinarySearchTree
 {
     /// <summary>
     /// Binary search trees (BST), sometimes called ordered or sorted binary trees. 
@@ -72,6 +72,8 @@ namespace Algorithms.DataStructures
 
             return curNode;
         }
+
+
 
         public void Insert(int key, bool isIterative = false)
         {
@@ -175,10 +177,10 @@ namespace Algorithms.DataStructures
             return IsBstTraversal(Root);
         }
 
-        private static bool IsBstTraversal(BinaryTreeNode<int> node)
+        private bool IsBstTraversal(BinaryTreeNode<int> node)
         {
-            var list = new List<int>();
-            InOrderTraversal(node, list);
+            var list = TraverseInOrder();
+
             for (int i = 1; i < list.Count; i++)
             {
                 if (list[i - 1] > list[i])

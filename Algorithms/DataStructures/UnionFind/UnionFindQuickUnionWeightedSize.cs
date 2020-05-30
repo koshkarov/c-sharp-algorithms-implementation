@@ -13,8 +13,8 @@ namespace Algorithms.DataStructures.UnionFind
     /// </remarks>
     public class UnionFindQuickUnionWeightedSize : IUnionFind
     {
-        private int[] _arr;
-        private int[] _weight;
+        private readonly int[] _arr;
+        private readonly int[] _weight;
         private int _count;
 
         public UnionFindQuickUnionWeightedSize(int size)

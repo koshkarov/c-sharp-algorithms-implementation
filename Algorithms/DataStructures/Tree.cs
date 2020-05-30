@@ -4,9 +4,9 @@ namespace Algorithms.DataStructures
 {
     class Tree<T>
     {
-        public T Value;
-        public Tree<T> Parent;
-        public List<Tree<T>> Children;
+        public T Value { get; set; }
+        public Tree<T> Parent { get; set; }
+        public List<Tree<T>> Children { get; set; }
 
         public Tree(T value)
         {
