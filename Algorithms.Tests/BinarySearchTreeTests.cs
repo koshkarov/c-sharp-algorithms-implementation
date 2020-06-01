@@ -9,7 +9,6 @@ namespace Algorithms.Tests
     class BinarySearchTreeTests
     {
         BinarySearchTree bstValid;
-        BinarySearchTree bstInvalid;
 
         [SetUp]
         protected void SetUp()
@@ -28,20 +27,63 @@ namespace Algorithms.Tests
                     Left = new BinaryTreeNode<int>(5)
                 }
             });
+        }
 
-            // Invlid Binary Search Tree
-            bstInvalid = new BinarySearchTree(new BinaryTreeNode<int>(3)
+        private BinaryTreeNode<int> GetValidBinarySearchTree()
+        {
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+
+            return new BinaryTreeNode<int>(6)
             {
-                Left = new BinaryTreeNode<int>(2)
+                Left = new BinaryTreeNode<int>(3)
                 {
-                    Left = new BinaryTreeNode<int>(1)
+                    Left = new BinaryTreeNode<int>(2)
+                    {
+                        Left = new BinaryTreeNode<int>(1)
+                    },
+                    Right = new BinaryTreeNode<int>(4)
                 },
-                Right = new BinaryTreeNode<int>(5)
+                Right = new BinaryTreeNode<int>(8)
                 {
-                    Right = new BinaryTreeNode<int>(1),
-                    Left = new BinaryTreeNode<int>(6)
+                    Left = new BinaryTreeNode<int>(7),
+                    Right = new BinaryTreeNode<int>(10)
+                    {
+                        Left = new BinaryTreeNode<int>(9),
+                        Right = new BinaryTreeNode<int>(12)
+                    }
                 }
-            });
+            };
+        }
+
+        private BinaryTreeNode<int> CreateBalancedBinarySearchTree(int elementsCount, bool isIterative = false)
+        {
+            // create an array for values
+            var balancedValues = new int[elementsCount];
+
+            // populate it
+            for (int i = 0; i < elementsCount; i++) 
+                balancedValues[i] = i;
+
+            // shuffle values in-place
+            balancedValues.Shuffle();
+
+            // create a binary search tree
+            var bst = new BinarySearchTree();
+
+            // act
+            foreach (var item in balancedValues)
+            {
+                bst.Insert(item, isIterative);
+            }
+
+            return bst.Root;
         }
 
         [Test]
@@ -91,25 +133,182 @@ namespace Algorithms.Tests
         public void Insert_BalancedKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
         {
             // arrange
-            var iterations = 100;
-            var balancedValues = new int[iterations];
-
-            for (int i = 0; i < iterations; i++) 
-                balancedValues[i] = i;
-
-            balancedValues.Shuffle();
-
-            var bst = new BinarySearchTree();
-
-            // act
-            foreach (var item in balancedValues)
-            {
-                bst.Insert(item, isIterative);
-            }
+            var rootNode = CreateBalancedBinarySearchTree(100, isIterative);
 
             // assert
-            var rootNode = bst.Root;
-            Assert.IsTrue(rootNode.IsBinarySerchTree());
+            Assert.IsTrue(rootNode.IsBinarySearchTree());
+        }
+
+        [Test]
+        public void Delete_LeaflessNode_IsCorrect() 
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+            var binarySearchTree = new BinarySearchTree(GetValidBinarySearchTree());
+
+            // act
+            binarySearchTree.Delete(1);
+
+            // assert
+            var root = binarySearchTree.Root;
+            // verify deleted node and BST integrity
+            Assert.Multiple(() => {
+                Assert.That(root.Value, Is.EqualTo(6));
+                Assert.That(root.Left.Value, Is.EqualTo(3));
+                Assert.That(root.Left.Left.Value, Is.EqualTo(2));
+                Assert.That(root.Left.Right.Value, Is.EqualTo(4));
+                Assert.That(root.Left.Left.Left, Is.EqualTo(null)); // deleted node
+                Assert.That(root.Right.Value, Is.EqualTo(8));
+                Assert.That(root.Right.Left.Value, Is.EqualTo(7));
+                Assert.That(root.Right.Right.Value, Is.EqualTo(10));
+                Assert.That(root.Right.Right.Right.Value, Is.EqualTo(12));
+                Assert.That(root.Right.Right.Left.Value, Is.EqualTo(9));
+            });
+        }
+
+        [Test]
+        public void Delete_NodeWithOneLeaf_IsCorrect() 
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+            var binarySearchTree = new BinarySearchTree(GetValidBinarySearchTree());
+
+            // act
+            binarySearchTree.Delete(2);
+
+            // assert
+            var root = binarySearchTree.Root;
+
+            // verify deleted node and BST integrity
+            // expected tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <1>   <4>     <7>   <10>
+            //                      /   \
+            //                    <9>   <12>
+            Assert.Multiple(() => {
+                Assert.That(root.Value, Is.EqualTo(6));
+
+                Assert.That(root.Left.Value, Is.EqualTo(3));
+                Assert.That(root.Left.Left.Value, Is.EqualTo(1)); // node replaced with the leaf
+                Assert.That(root.Left.Right.Value, Is.EqualTo(4));
+
+                Assert.That(root.Right.Value, Is.EqualTo(8));
+                Assert.That(root.Right.Left.Value, Is.EqualTo(7));
+                Assert.That(root.Right.Right.Value, Is.EqualTo(10));
+
+                Assert.That(root.Right.Right.Right.Value, Is.EqualTo(12));
+                Assert.That(root.Right.Right.Left.Value, Is.EqualTo(9));
+            });
+        }
+
+        [Test]
+        public void Delete_NodeWithTwoLeafsCase1_IsCorrect() 
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+            var binarySearchTree = new BinarySearchTree(GetValidBinarySearchTree());
+
+            // act
+            binarySearchTree.Delete(10);
+
+            // assert
+            var root = binarySearchTree.Root;
+
+            // verify deleted node and BST integrity
+            // expected tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <12>
+            //   /                   /
+            //<1>                  <9>
+            Assert.Multiple(() => {
+                Assert.That(root.Value, Is.EqualTo(6));
+
+                Assert.That(root.Left.Value, Is.EqualTo(3));
+                Assert.That(root.Left.Left.Value, Is.EqualTo(2));
+                Assert.That(root.Left.Right.Value, Is.EqualTo(4));
+
+                Assert.That(root.Right.Value, Is.EqualTo(8));
+                Assert.That(root.Right.Left.Value, Is.EqualTo(7));
+                Assert.That(root.Right.Right.Value, Is.EqualTo(12));
+
+                Assert.That(root.Right.Right.Left.Value, Is.EqualTo(9));
+                Assert.That(root.Right.Right.Right, Is.EqualTo(null));
+                
+            });
+        }
+
+        [Test]
+        public void Delete_NodeWithTwoLeafsCase2_IsCorrect()
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+            var binarySearchTree = new BinarySearchTree(GetValidBinarySearchTree());
+
+            // act
+            binarySearchTree.Delete(8);
+
+            // assert
+            var root = binarySearchTree.Root;
+
+            // verify deleted node and BST integrity
+
+            // expected tree:
+            //             <6>
+            //           /     \
+            //      <3>           <10>
+            //      /  \         /   \
+            //   <2>   <4>     <9>   <12>
+            //   /            /
+            //<1>         <7>
+
+            Assert.Multiple(() => {
+                Assert.That(root.Value, Is.EqualTo(6));
+
+                Assert.That(root.Left.Value, Is.EqualTo(3));
+                Assert.That(root.Left.Left.Value, Is.EqualTo(2));
+                Assert.That(root.Left.Right.Value, Is.EqualTo(4));
+
+                Assert.That(root.Right.Value, Is.EqualTo(10));
+                Assert.That(root.Right.Left.Value, Is.EqualTo(9));
+                Assert.That(root.Right.Right.Value, Is.EqualTo(12));
+
+                Assert.That(root.Right.Left.Left.Value, Is.EqualTo(7));
+                Assert.That(root.Right.Left.Right, Is.EqualTo(null));
+            });
         }
 
         [Test]
@@ -117,27 +316,29 @@ namespace Algorithms.Tests
         {
             // assert
             var rootNode = bstValid.Root;
-            Assert.IsTrue(rootNode.IsBinarySerchTree());
+            Assert.IsTrue(rootNode.IsBinarySearchTree());
         }
 
         [Test]
         public void IsBinarySearchTree_InvalidTree_ReturnsFalse()
         {
+            // create Invlid Binary Search Tree
+            var notBinarySearchTree = new BinarySearchTree(new BinaryTreeNode<int>(3)
+            {
+                Left = new BinaryTreeNode<int>(2)
+                {
+                    Left = new BinaryTreeNode<int>(1)
+                },
+                Right = new BinaryTreeNode<int>(5)
+                {
+                    Right = new BinaryTreeNode<int>(1),
+                    Left = new BinaryTreeNode<int>(6)
+                }
+            });
+
             // assert
-            var rootNode = bstInvalid.Root;
-            Assert.IsFalse(rootNode.IsBinarySerchTree());
-        }
-
-        [Test]
-        public void IsBinarySearchTreeTraversalValid()
-        {
-            Assert.AreEqual(true, bstValid.IsBinarySearchTreeTraversal());
-        }
-
-        [Test]
-        public void IsBinarySearchTreeTraversalInvalid()
-        {
-            Assert.AreEqual(false, bstInvalid.IsBinarySearchTreeTraversal());
+            var rootNode = notBinarySearchTree.Root;
+            Assert.IsFalse(rootNode.IsBinarySearchTree());
         }
 
         [Test]
@@ -158,19 +359,12 @@ namespace Algorithms.Tests
         [Test]
         public void BinaryTreeLevelInsert()
         {
-            var bst = new BinarySearchTree();
-            bst.Insert(1);
-            bst.Insert(2);
-            bst.Insert(3);
-            bst.Insert(4);
-            bst.Insert(5);
-            bst.Insert(6);
-            bst.Insert(7);
+            var iterations = 100;
+            var rootNode = CreateBalancedBinarySearchTree(iterations);
+            var bst = new BinarySearchTree(rootNode);
 
             var traversed = bst.TraverseInOrder();
-
-            Assert.AreEqual(false, bstValid.Contains(8));
-
+            for (int i = 0; i < iterations; i++) Assert.IsTrue(traversed[i] == i);
         }
 
     }

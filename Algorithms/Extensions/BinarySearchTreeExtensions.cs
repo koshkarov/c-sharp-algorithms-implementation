@@ -5,10 +5,14 @@ namespace Algorithms.Extensions
 {
     public static class BinarySearchTreeExtensions
     {
-        public static bool IsBinarySerchTree(this BinaryTreeNode<int> node)
+        /// <summary>
+        /// Determines whether a binary tree is a binary searh tree.
+        /// </summary>
+        /// <param name="node">The root node of the tree.</param>
+        /// <returns></returns>
+        public static bool IsBinarySearchTree(this BinaryTreeNode<int> node)
         {
-            if (node == null) throw new NullReferenceException("BinarySearchTree is empty.");
-
+            if (node == null) throw new InvalidOperationException("BinarySearchTree is empty.");
             return IsBinarySearchTree(node, int.MinValue, int.MaxValue);
         }
 
