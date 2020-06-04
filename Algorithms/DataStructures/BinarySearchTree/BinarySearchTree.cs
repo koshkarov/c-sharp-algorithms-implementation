@@ -13,19 +13,53 @@ namespace Algorithms.DataStructures.BinarySearchTree
     /// TODO: provide complexity
     /// 
     /// </summary>
-    public class BinarySearchTree
+    public class BinarySearchTree<TKey, TValue> where TKey : IComparable<TKey>
     {
-        private const string NOT_FOUND_DELETE_VALUE_MESSAGE = "Couldn't find the value to delete";
-
-        public BinaryTreeNode<int> Root { get; private set; }
+        public BinaryTreeNode<TKey, TValue> Root { get; private set; }
 
         public BinarySearchTree()
         {
         }
 
-        public BinarySearchTree(BinaryTreeNode<int> root)
+        public BinarySearchTree(BinaryTreeNode<TKey, TValue> root)
         {
             Root = root;
+        }
+
+        #region public methods
+        public TValue Get(TKey key)
+        {
+            var node = GetNodeRecursively(Root, key);
+            return node == null ? default : node.Value;
+        }
+
+        public void Put(TKey key, TValue value, bool isIterative = false)
+        {
+            var newNode = new BinaryTreeNode<TKey, TValue>(key, value);
+            Root = isIterative
+                ? PutIteratively(Root, newNode)
+                : PutRecursively(Root, newNode);
+        }
+
+        public void Delete(TKey key)
+        {
+            Delete(null, Root, key);
+        }
+
+        public bool Contains(TKey key, bool isIterative = false)
+        {
+            var node = isIterative
+                ? GetNodeIteratively(key)
+                : GetNodeRecursively(Root, key);
+
+            return node != null;
+        }
+
+        public List<TKey> TraverseInOrder()
+        {
+            List<TKey> list = new List<TKey>();
+            InOrderTraversal(Root, list);
+            return list;
         }
 
         public void Clear()
@@ -33,127 +67,90 @@ namespace Algorithms.DataStructures.BinarySearchTree
             Root = null;
         }
 
-        public bool Contains(int key, bool isIterative = false)
-        {
-            var result = isIterative 
-                ? SearchIteratively(Root, key) 
-                : SearchRecursively(Root, key);
+        #endregion
 
-            return result != null;
+        #region private methods
+        private BinaryTreeNode<TKey, TValue> GetNodeRecursively(BinaryTreeNode<TKey, TValue> node, TKey key)
+        {
+            if (node == null) return default;
+            else if (key.CompareTo(node.Key) > 0) return GetNodeRecursively(node.Right, key);
+            else if (key.CompareTo(node.Key) < 0) return GetNodeRecursively(node.Left, key);
+            else return node;
         }
 
-        private BinaryTreeNode<int> SearchRecursively(BinaryTreeNode<int> node, int key)
+        private BinaryTreeNode<TKey, TValue> GetNodeIteratively(TKey key)
         {
-            if (node == null || node.Value == key)
-                return node;
-            if (key > node.Value)
-                return SearchRecursively(node.Right, key);
-            if (key < node.Value)
-                return SearchRecursively(node.Left, key);
+            var curNode = Root;
 
-            return node;
-        }
-
-        private BinaryTreeNode<int> SearchIteratively(BinaryTreeNode<int> node, int key)
-        {
-            var curNode = node;
             while(curNode != null)
             {
-                if (key == curNode.Value)
-                {
-                    return curNode;
-                }
-
-                if (key > curNode.Value) {
-                    curNode = curNode.Right;
-                }
-                else // key < curNode.Value
-                {
-                    curNode = curNode.Left;
-                }
+                if (key.CompareTo(curNode.Key) == 0) return curNode;
+                else if (key.CompareTo(curNode.Key) > 0) curNode = curNode.Right;
+                else curNode = curNode.Left;
             }
 
             return curNode;
         }
 
-        public void Insert(int key, bool isIterative = false)
-        {
-            var newNode = new BinaryTreeNode<int>(key);
-            Root = isIterative 
-                ? InsertIteratively(Root, newNode)
-                : InsertRecursively(Root, newNode);
-        }
-
-        private BinaryTreeNode<int> InsertIteratively(BinaryTreeNode<int> node, BinaryTreeNode<int> newNode)
+        private BinaryTreeNode<TKey, TValue> PutIteratively(BinaryTreeNode<TKey, TValue> node, BinaryTreeNode<TKey, TValue> newNode)
         {
             if (node == null) return newNode;
 
             var curNode = node;
             while (curNode != null)
             {
-                if (newNode.Value > curNode.Value)
+                if (newNode.Key.CompareTo(curNode.Key) > 0)
                 {
                     if (curNode.Right == null)
                     {
                         curNode.Right = newNode;
                         break;
                     } 
-                    else
-                    {
-                        curNode = curNode.Right;
-                    }
+                    else curNode = curNode.Right;
                 }
-                else // key < curNode.Value
+                else // newNode.Key.CompareTo(curNode.Key) < 0
                 {
                     if (curNode.Left == null)
                     {
                         curNode.Left = newNode;
                         break;
                     }
-                    else
-                    {
-                        curNode = curNode.Left;
-                    }
+                    else curNode = curNode.Left;
                 }
             }
 
             return Root;
         }
 
-        private BinaryTreeNode<int> InsertRecursively(BinaryTreeNode<int> node, BinaryTreeNode<int> newNode)
+        private BinaryTreeNode<TKey, TValue> PutRecursively(BinaryTreeNode<TKey, TValue> node, BinaryTreeNode<TKey, TValue> newNode)
         {
-            if (node == null)
-                node = newNode;
-            else if (newNode.Value < node.Value)
-                node.Left = InsertRecursively(node.Left, newNode);
-            else // newNode.Value > currentNode.Value
-                node.Right = InsertRecursively(node.Right, newNode);
-
+            if (node == null) node = newNode;
+            else if (newNode.Key.CompareTo(node.Key) < 0) 
+                node.Left = PutRecursively(node.Left, newNode);
+            else if (newNode.Key.CompareTo(node.Key) > 0) 
+                node.Right = PutRecursively(node.Right, newNode);
             return node;
         }
 
-        public void Delete(int deleteValue)
-        {
-            Delete(null, Root, deleteValue);
-        }
-
-        private void Delete(BinaryTreeNode<int> parentNode, BinaryTreeNode<int> currentNode, int value)
+        private void Delete(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, TKey key)
         {
             // find the node and store information about a parent
-            if (currentNode == null) 
-                throw new InvalidOperationException(NOT_FOUND_DELETE_VALUE_MESSAGE);
-            else if (value > currentNode.Value)
+            if (currentNode == null)
             {
-                Delete(currentNode, currentNode.Right, value);
+                // nothing to delete
                 return;
             }
-                
-            else if (value < currentNode.Value)
+            else if (key.CompareTo(currentNode.Key) > 0)
             {
-                Delete(currentNode, currentNode.Left, value);
+                Delete(currentNode, currentNode.Right, key);
                 return;
             }
-                
+            else if (key.CompareTo(currentNode.Key) < 0)
+            {
+                Delete(currentNode, currentNode.Left, key);
+                return;
+            }
+
 
             // Check a special case when deleting a root node
             // TODO
@@ -164,74 +161,49 @@ namespace Algorithms.DataStructures.BinarySearchTree
             // - Deleting a node with one child: remove the node and replace it with its child.
             // - Deleting a node with two children: 
 
+            
             if (currentNode.Left != null && currentNode.Right != null)
             {
                 // insert left node to the in-order successor
-                InsertRecursively(currentNode.Right, currentNode.Left);
+                PutRecursively(currentNode.Right, currentNode.Left);
 
                 // replace current node with in-order successor (right node)
                 ReplaceNodeInParent(parentNode, currentNode, currentNode.Right);
                 
             }
-            // node with only left child
+            // Deleting a node with one child: remove the node and replace it with its child.
             else if (currentNode.Left != null)
             {
                 ReplaceNodeInParent(parentNode, currentNode, currentNode.Left);
             }
-            // node with only right child
+            // Deleting a node with one child: remove the node and replace it with its child.
             else if (currentNode.Right != null)
             {
                 ReplaceNodeInParent(parentNode, currentNode, currentNode.Right);
             }
-            else // leafless node
+            // Deleting a node with no children: simply remove the node from the tree.
+            else
             {
                 ReplaceNodeInParent(parentNode, currentNode, null);
             }
         }
 
-        private void ReplaceNodeInParent(BinaryTreeNode<int> parentNode, BinaryTreeNode<int> currentNode, BinaryTreeNode<int> newNode)
+        private void ReplaceNodeInParent(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
         {
             if (parentNode.Left.Equals(currentNode))
-            {
                 parentNode.Left = newNode;
-            }
             else
-            {
                 parentNode.Right = newNode;
-            }
         }
 
-
-        public List<int> TraverseInOrder()
-        {
-            List<int> list = new List<int>();
-            InOrderTraversal(Root, list);
-            return list;
-        }
-
-        private static void InOrderTraversal(BinaryTreeNode<int> node, List<int> list)
+        private static void InOrderTraversal(BinaryTreeNode<TKey, TValue> node, List<TKey> list)
         {
             if (node == null) return;
             InOrderTraversal(node.Left, list);
-            list.Add(node.Value);
+            list.Add(node.Key);
             InOrderTraversal(node.Right, list);
         }
 
-        private static void PreOrderTraversal(BinaryTreeNode<int> node, List<int> list)
-        {
-            if (node == null) return;
-            list.Add(node.Value);
-            PreOrderTraversal(node.Left, list);
-            PreOrderTraversal(node.Right, list);
-        }
-
-        private static void PostOrderTraversal(BinaryTreeNode<int> node, List<int> list)
-        {
-            if (node == null) return;
-            PostOrderTraversal(node.Left, list);
-            PostOrderTraversal(node.Right, list);
-            list.Add(node.Value);
-        }
+        #endregion
     }
 }
-

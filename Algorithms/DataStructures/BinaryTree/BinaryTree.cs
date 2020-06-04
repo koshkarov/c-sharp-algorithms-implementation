@@ -11,16 +11,16 @@ namespace Algorithms.DataStructures.BinaryTree
     /// 
     /// TODO: Implement and remove binary search tree methods
     /// </summary>
-    public class BinaryTree
+    public class BinaryTree<TKey, TValue> where TKey : IComparable<TKey>
     {
-        public BinaryTreeNode<int> Root { get; set; }
+        public BinaryTreeNode<TKey, TValue> Root { get; set; }
 
         public BinaryTree()
         {
             Root = null;
         }
 
-        public BinaryTree(BinaryTreeNode<int> root)
+        public BinaryTree(BinaryTreeNode<TKey, TValue> root)
         {
             Root = root;
         }
@@ -30,41 +30,15 @@ namespace Algorithms.DataStructures.BinaryTree
             Root = null;
         }
 
-        public bool Contains(int key)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        // TODO: What is this looking for?
-        public bool FindTarget(int key)
-        {
-            return Find(Root, key, new HashSet<int>());
-        }
-
-        private bool Find(BinaryTreeNode<int> binaryTreeNode, int key, HashSet<int> set)
-        {
-            if (binaryTreeNode == null)
-                return false;
-
-            if (set.Contains(key - binaryTreeNode.Value))
-                return true;
-
-            set.Add(binaryTreeNode.Value);
-
-            return Find(binaryTreeNode.Left, key, set) || Find(binaryTreeNode.Right, key, set);
-        }
-
         /// <summary>
         /// Insert the key into the binary tree at first position available in level order.
         /// The idea is to do iterative level order traversal of the given tree using queue. If we find a node whose left child is empty, we make new key as left child of the node. 
         /// Else if we find a node whose right child is empty, we make new key as right child. We keep traversing the tree until we find a node whose either left or right is empty.
         /// </summary>
         /// <param name="key">A value to insert.s</param>
-        public void Insert(int key)
+        public void Insert(TKey key, TValue value)
         {
-            var insertNode = new BinaryTreeNode<int>(key);
+            var insertNode = new BinaryTreeNode<TKey, TValue>(key, value);
 
             // case if binary tree is empty
             if (Root == null)
@@ -78,9 +52,9 @@ namespace Algorithms.DataStructures.BinaryTree
             }
         }
 
-        private void Insert(BinaryTreeNode<int> currentNode, BinaryTreeNode<int> insertNode)
+        private void Insert(BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> insertNode)
         {
-            var queue = new Queue<BinaryTreeNode<int>>();
+            var queue = new Queue<BinaryTreeNode<TKey, TValue>>();
             queue.Enqueue(currentNode);
 
             while(queue.Count != 0)
@@ -107,11 +81,6 @@ namespace Algorithms.DataStructures.BinaryTree
                     queue.Enqueue(tempNode.Right);
                 }
             }
-        }
-
-        public void Delete()
-        {
-            // TODO3
         }
     }
 }

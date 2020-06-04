@@ -1,19 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Algorithms.DataStructures.BinaryTree
 {
     /// <summary>
     /// Creates a new tree node of arbitrary type <typeparamref name="T"/>
     /// </summary>
-    /// <typeparam name="T">The element type of the linked list</typeparam>
     /// 
-    public class BinaryTreeNode<T>
+    public class BinaryTreeNode<TKey, TValue> where TKey : IComparable<TKey>
     {
-        public T Value { get; set; }
-        public BinaryTreeNode<T> Left { get; set; }
-        public BinaryTreeNode<T> Right { get; set; }
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
+        public BinaryTreeNode<TKey, TValue> Left { get; set; }
+        public BinaryTreeNode<TKey, TValue> Right { get; set; }
 
-        public BinaryTreeNode(T value) { Value = value; }
+        public BinaryTreeNode(TKey key, TValue value) {
+            Key = key;
+            Value = value; 
+        }
 
     }
 }
