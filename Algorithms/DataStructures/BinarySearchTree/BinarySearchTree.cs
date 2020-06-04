@@ -93,17 +93,18 @@ namespace Algorithms.DataStructures.BinarySearchTree
 
         private BinaryTreeNode<TKey, TValue> PutIteratively(TKey key, TValue value)
         {
-            if (Root == null) return new BinaryTreeNode<TKey, TValue>(key, value);
+            var newNode = new BinaryTreeNode<TKey, TValue>(key, value);
+            if (Root == null) return newNode;
 
-            BinaryTreeNode<TKey, TValue> parent = null;
-            var curNode = Root;
+            BinaryTreeNode<TKey, TValue> parent = null, curNode = Root;
             while (curNode != null)
             {
                 if (key.CompareTo(curNode.Key) > 0)
                 {
                     if (curNode.Right == null)
                     {
-                        curNode.Right = new BinaryTreeNode<TKey, TValue>(key, value, parent);
+                        newNode.Parent = parent;
+                        curNode.Right = newNode;
                         break;
                     }
                     else {
@@ -115,7 +116,8 @@ namespace Algorithms.DataStructures.BinarySearchTree
                 {
                     if (curNode.Left == null)
                     {
-                        curNode.Left = new BinaryTreeNode<TKey, TValue>(key, value, parent);
+                        newNode.Parent = parent;
+                        curNode.Left = newNode;
                         break;
                     }
                     else
@@ -207,6 +209,26 @@ namespace Algorithms.DataStructures.BinarySearchTree
             var curNode = node;
             var parent = node.Parent;
             while (parent != null && curNode.Equals(parent.Right))
+            {
+                curNode = parent;
+                parent = parent.Parent;
+            }
+
+            return parent;
+        }
+
+        private BinaryTreeNode<TKey, TValue> GetPredecessor(BinaryTreeNode<TKey, TValue> node)
+        {
+            // Case 1: if the left subtree of node is nonempty.
+            if (node.Left != null)
+            {
+                return GetMax(node.Left);
+            }
+
+            // Case 2: if the left subtree of node is nonempty.
+            var curNode = node;
+            var parent = node.Parent;
+            while (parent != null && curNode.Equals(parent.Left))
             {
                 curNode = parent;
                 parent = parent.Parent;
