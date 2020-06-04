@@ -143,10 +143,9 @@ namespace Algorithms.DataStructures.BinarySearchTree
 
         private void Delete(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, TKey key)
         {
-            // find the node and store information about a parent
             if (currentNode == null)
             {
-                // nothing to delete
+                // couldn't find the node
                 return;
             }
             else if (key.CompareTo(currentNode.Key) > 0)
@@ -177,23 +176,23 @@ namespace Algorithms.DataStructures.BinarySearchTree
                 PutRecursively(currentNode, currentNode.Right, currentNode.Left.Key, currentNode.Left.Value);
 
                 // replace current node with in-order successor (right node)
-                ReplaceNodeInParent(parentNode, currentNode, currentNode.Right);
+                Transplant(currentNode, currentNode.Right);
                 
             }
             // Deleting a node with one child: remove the node and replace it with its child.
             else if (currentNode.Left != null)
             {
-                ReplaceNodeInParent(parentNode, currentNode, currentNode.Left);
+                Transplant(currentNode, currentNode.Left);
             }
             // Deleting a node with one child: remove the node and replace it with its child.
             else if (currentNode.Right != null)
             {
-                ReplaceNodeInParent(parentNode, currentNode, currentNode.Right);
+                Transplant(currentNode, currentNode.Right);
             }
             // Deleting a node with no children: simply remove the node from the tree.
             else
             {
-                ReplaceNodeInParent(parentNode, currentNode, null);
+                Transplant(currentNode, null);
             }
         }
 
@@ -257,14 +256,17 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return curNode;
         }
 
-
-        private void ReplaceNodeInParent(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
+        private void Transplant(BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
         {
-            if (parentNode.Left.Equals(currentNode))
-                parentNode.Left = newNode;
-            else
-                parentNode.Right = newNode;
+            // case when currentNode is root node
+            if (currentNode.Parent == null) Root = newNode;
+            else if (currentNode.Equals(currentNode.Parent.Left)) currentNode.Parent.Left = newNode;
+            else currentNode.Parent.Right = newNode;
+
+            // we allow newNode to be null
+            if (newNode != null) newNode.Parent = currentNode.Parent;
         }
+
 
         private static void InOrderTraversal(BinaryTreeNode<TKey, TValue> node, List<TKey> list)
         {
