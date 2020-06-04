@@ -195,7 +195,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
             }
         }
 
-        private BinaryTreeNode<TKey, TValue> GetSuccessor(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> node)
+        private BinaryTreeNode<TKey, TValue> GetSuccessor(BinaryTreeNode<TKey, TValue> node)
         {
             // Case 1: if the right subtree of node is nonempty.
             if (node.Right != null)
@@ -203,7 +203,16 @@ namespace Algorithms.DataStructures.BinarySearchTree
                 return GetMin(node.Right);
             }
 
-            throw new NotImplementedException();
+            // Case 2: if the right subtree of node is nonempty.
+            var curNode = node;
+            var parent = node.Parent;
+            while (parent != null && curNode.Equals(parent.Right))
+            {
+                curNode = parent;
+                parent = parent.Parent;
+            }
+
+            return parent;
         }
 
         private BinaryTreeNode<TKey, TValue> GetMin(BinaryTreeNode<TKey, TValue> node)

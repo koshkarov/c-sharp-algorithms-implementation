@@ -12,7 +12,7 @@ namespace Algorithms.DataStructures.BinaryTree
         public TValue Value { get; set; }
         public BinaryTreeNode<TKey, TValue> Left { get; set; }
         public BinaryTreeNode<TKey, TValue> Right { get; set; }
-        private BinaryTreeNode<TKey, TValue> _parent { get; set; }
+        public BinaryTreeNode<TKey, TValue> Parent { get; set; }
 
 
         public BinaryTreeNode(TKey key, TValue value) {
@@ -22,7 +22,7 @@ namespace Algorithms.DataStructures.BinaryTree
 
         public BinaryTreeNode(TKey key, TValue value, BinaryTreeNode<TKey, TValue> parent) : this(key, value)
         {
-            _parent = parent;
+            Parent = parent;
         }
 
     }
