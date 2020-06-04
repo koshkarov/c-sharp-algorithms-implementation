@@ -35,10 +35,9 @@ namespace Algorithms.DataStructures.BinarySearchTree
 
         public void Put(TKey key, TValue value, bool isIterative = false)
         {
-            var newNode = new BinaryTreeNode<TKey, TValue>(key, value);
             Root = isIterative
-                ? PutIteratively(Root, newNode)
-                : PutRecursively(Root, newNode);
+                ? PutIteratively(key, value)
+                : PutRecursively(null, Root, key, value);
         }
 
         public void Delete(TKey key)
@@ -55,7 +54,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return node != null;
         }
 
-        public List<TKey> TraverseInOrder()
+        public List<TKey> GetKeys()
         {
             List<TKey> list = new List<TKey>();
             InOrderTraversal(Root, list);
@@ -92,43 +91,51 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return curNode;
         }
 
-        private BinaryTreeNode<TKey, TValue> PutIteratively(BinaryTreeNode<TKey, TValue> node, BinaryTreeNode<TKey, TValue> newNode)
+        private BinaryTreeNode<TKey, TValue> PutIteratively(TKey key, TValue value)
         {
-            if (node == null) return newNode;
+            if (Root == null) return new BinaryTreeNode<TKey, TValue>(key, value);
 
-            var curNode = node;
+            BinaryTreeNode<TKey, TValue> parent = null;
+            var curNode = Root;
             while (curNode != null)
             {
-                if (newNode.Key.CompareTo(curNode.Key) > 0)
+                if (key.CompareTo(curNode.Key) > 0)
                 {
                     if (curNode.Right == null)
                     {
-                        curNode.Right = newNode;
+                        curNode.Right = new BinaryTreeNode<TKey, TValue>(key, value, parent);
                         break;
-                    } 
-                    else curNode = curNode.Right;
+                    }
+                    else {
+                        parent = curNode;
+                        curNode = curNode.Right;
+                    }
                 }
                 else // newNode.Key.CompareTo(curNode.Key) < 0
                 {
                     if (curNode.Left == null)
                     {
-                        curNode.Left = newNode;
+                        curNode.Left = new BinaryTreeNode<TKey, TValue>(key, value, parent);
                         break;
                     }
-                    else curNode = curNode.Left;
+                    else
+                    {
+                        parent = curNode;
+                        curNode = curNode.Left;
+                    }
                 }
             }
 
             return Root;
         }
 
-        private BinaryTreeNode<TKey, TValue> PutRecursively(BinaryTreeNode<TKey, TValue> node, BinaryTreeNode<TKey, TValue> newNode)
+        private BinaryTreeNode<TKey, TValue> PutRecursively(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> node, TKey key, TValue value)
         {
-            if (node == null) node = newNode;
-            else if (newNode.Key.CompareTo(node.Key) < 0) 
-                node.Left = PutRecursively(node.Left, newNode);
-            else if (newNode.Key.CompareTo(node.Key) > 0) 
-                node.Right = PutRecursively(node.Right, newNode);
+            if (node == null) node = new BinaryTreeNode<TKey, TValue>(key, value, parent);
+            else if (key.CompareTo(node.Key) < 0) 
+                node.Left = PutRecursively(node, node.Left, key, value);
+            else if (key.CompareTo(node.Key) > 0) 
+                node.Right = PutRecursively(node, node.Right, key, value);
             return node;
         }
 
@@ -165,7 +172,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
             if (currentNode.Left != null && currentNode.Right != null)
             {
                 // insert left node to the in-order successor
-                PutRecursively(currentNode.Right, currentNode.Left);
+                PutRecursively(currentNode, currentNode.Right, currentNode.Left.Key, currentNode.Left.Value);
 
                 // replace current node with in-order successor (right node)
                 ReplaceNodeInParent(parentNode, currentNode, currentNode.Right);
@@ -187,6 +194,38 @@ namespace Algorithms.DataStructures.BinarySearchTree
                 ReplaceNodeInParent(parentNode, currentNode, null);
             }
         }
+
+        private BinaryTreeNode<TKey, TValue> GetSuccessor(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> node)
+        {
+            // Case 1: if the right subtree of node is nonempty.
+            if (node.Right != null)
+            {
+                return GetMin(node.Right);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private BinaryTreeNode<TKey, TValue> GetMin(BinaryTreeNode<TKey, TValue> node)
+        {
+            var curNode = node;
+            while(node.Left != null)
+            {
+                curNode = curNode.Left;
+            }
+            return curNode;
+        }
+
+        private BinaryTreeNode<TKey, TValue> GetMax(BinaryTreeNode<TKey, TValue> node)
+        {
+            var curNode = node;
+            while (node.Right != null)
+            {
+                curNode = curNode.Right;
+            }
+            return curNode;
+        }
+
 
         private void ReplaceNodeInParent(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
         {

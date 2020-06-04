@@ -366,7 +366,7 @@ namespace Algorithms.Tests
             var rootNode = CreateBalancedBinarySearchTree(iterations);
             var bst = new BinarySearchTree<int, string>(rootNode);
 
-            var traversed = bst.TraverseInOrder();
+            var traversed = bst.GetKeys();
             for (int i = 0; i < iterations; i++) Assert.IsTrue(traversed[i] == i);
         }
 
