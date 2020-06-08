@@ -1,6 +1,7 @@
 ﻿using Algorithms.DataStructures.BinaryTree;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Algorithms.DataStructures.BinarySearchTree
 {
@@ -13,15 +14,15 @@ namespace Algorithms.DataStructures.BinarySearchTree
     /// TODO: provide complexity
     /// 
     /// </summary>
-    public class BinarySearchTree<TKey, TValue> where TKey : IComparable<TKey>
+    public class BSearchTree<TKey, TValue> where TKey : IComparable<TKey>
     {
         public BinaryTreeNode<TKey, TValue> Root { get; private set; }
 
-        public BinarySearchTree()
+        public BSearchTree()
         {
         }
 
-        public BinarySearchTree(BinaryTreeNode<TKey, TValue> root)
+        public BSearchTree(BinaryTreeNode<TKey, TValue> root)
         {
             Root = root;
         }
@@ -37,12 +38,14 @@ namespace Algorithms.DataStructures.BinarySearchTree
         {
             Root = isIterative
                 ? PutIteratively(key, value)
-                : PutRecursively(null, Root, key, value);
+                : PutRecursively(Root, new BinaryTreeNode<TKey, TValue>(key, value));
         }
 
         public void Delete(TKey key)
         {
-            Delete(null, Root, key);
+            var node = GetNodeRecursively(Root, key);
+            if (node == null) throw new InvalidOperationException($"Couldn't find node with key {key}");
+            Delete(node);
         }
 
         public bool Contains(TKey key, bool isIterative = false)
@@ -54,9 +57,9 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return node != null;
         }
 
-        public List<TKey> GetKeys()
+        public IList<TKey> GetKeys()
         {
-            List<TKey> list = new List<TKey>();
+            var list = new List<TKey>();
             InOrderTraversal(Root, list);
             return list;
         }
@@ -131,68 +134,60 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return Root;
         }
 
-        private BinaryTreeNode<TKey, TValue> PutRecursively(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> node, TKey key, TValue value)
+        private BinaryTreeNode<TKey, TValue> PutRecursively(BinaryTreeNode<TKey, TValue> node, BinaryTreeNode<TKey, TValue> newNode)
         {
-            if (node == null) node = new BinaryTreeNode<TKey, TValue>(key, value, parent);
-            else if (key.CompareTo(node.Key) < 0) 
-                node.Left = PutRecursively(node, node.Left, key, value);
-            else if (key.CompareTo(node.Key) > 0) 
-                node.Right = PutRecursively(node, node.Right, key, value);
+            if (node == null) node = newNode;
+            else if (newNode.Key.CompareTo(node.Key) < 0)
+            {
+                newNode.Parent = node;
+                node.Left = PutRecursively(node.Left, newNode);
+            }
+            else if (newNode.Key.CompareTo(node.Key) > 0)
+            {
+                newNode.Parent = node;
+                node.Right = PutRecursively(node.Right, newNode);
+            }
+                
             return node;
         }
 
-        private void Delete(BinaryTreeNode<TKey, TValue> parentNode, BinaryTreeNode<TKey, TValue> currentNode, TKey key)
+        /// <summary>
+        /// Deletes node from a tree.
+        /// </summary>
+        /// <param name="delNode"></param>
+        private void Delete(BinaryTreeNode<TKey, TValue> delNode)
         {
-            if (currentNode == null)
+            // this covers both cases when the delete node is leafless and there is only one leaf
+            if (delNode.Left == null)
             {
-                // couldn't find the node
-                return;
+                Transplant(delNode, delNode.Right);
             }
-            else if (key.CompareTo(currentNode.Key) > 0)
+            // this case covers when there is only right leaf in delete node
+            else if (delNode.Right == null)
             {
-                Delete(currentNode, currentNode.Right, key);
-                return;
-            }
-            else if (key.CompareTo(currentNode.Key) < 0)
-            {
-                Delete(currentNode, currentNode.Left, key);
-                return;
-            }
-
-
-            // Check a special case when deleting a root node
-            // TODO
-
-
-            // There are three possible cases to consider:
-            // - Deleting a node with no children: simply remove the node from the tree.
-            // - Deleting a node with one child: remove the node and replace it with its child.
-            // - Deleting a node with two children: 
-
-            
-            if (currentNode.Left != null && currentNode.Right != null)
-            {
-                // insert left node to the in-order successor
-                PutRecursively(currentNode, currentNode.Right, currentNode.Left.Key, currentNode.Left.Value);
-
-                // replace current node with in-order successor (right node)
-                Transplant(currentNode, currentNode.Right);
-                
-            }
-            // Deleting a node with one child: remove the node and replace it with its child.
-            else if (currentNode.Left != null)
-            {
-                Transplant(currentNode, currentNode.Left);
-            }
-            // Deleting a node with one child: remove the node and replace it with its child.
-            else if (currentNode.Right != null)
-            {
-                Transplant(currentNode, currentNode.Right);
-            }
-            // Deleting a node with no children: simply remove the node from the tree.
+                Transplant(delNode, delNode.Left);
+            } 
+           // this case covers when delete node has both children
             else
             {
-                Transplant(currentNode, null);
+                // get a successor - it is always be a minimum node of the right sub-tree
+                // (we know already that the right sub-tree exists)
+                var successor = GetSuccessor(delNode);
+
+                if (successor.Parent.Equals(delNode) == false)
+                {
+                    // replace successor with the right child
+                    Transplant(successor, successor.Right);
+                    // rewire successor's node with the delte node right child
+                    successor.Right = delNode.Right;
+                    // and update replaces right child's parrent with successor's node
+                    successor.Right.Parent = successor;
+                }
+
+                Transplant(delNode, successor);
+                successor.Left = delNode.Left;
+                successor.Left.Parent = successor;
+
             }
         }
 
@@ -239,7 +234,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
         private BinaryTreeNode<TKey, TValue> GetMin(BinaryTreeNode<TKey, TValue> node)
         {
             var curNode = node;
-            while(node.Left != null)
+            while(curNode.Left != null)
             {
                 curNode = curNode.Left;
             }
@@ -249,7 +244,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
         private BinaryTreeNode<TKey, TValue> GetMax(BinaryTreeNode<TKey, TValue> node)
         {
             var curNode = node;
-            while (node.Right != null)
+            while (curNode.Right != null)
             {
                 curNode = curNode.Right;
             }
@@ -259,12 +254,25 @@ namespace Algorithms.DataStructures.BinarySearchTree
         private void Transplant(BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
         {
             // case when currentNode is root node
-            if (currentNode.Parent == null) Root = newNode;
-            else if (currentNode.Equals(currentNode.Parent.Left)) currentNode.Parent.Left = newNode;
-            else currentNode.Parent.Right = newNode;
+            if (currentNode.Parent == null)
+            {
+                Root = newNode;
+            }
+            // identify which node is current node in relation to its parent and replace it
+            else if (currentNode.Equals(currentNode.Parent.Left))
+            {
+                currentNode.Parent.Left = newNode;
+            }
+            else
+            {
+                currentNode.Parent.Right = newNode;
+            }
 
-            // we allow newNode to be null
-            if (newNode != null) newNode.Parent = currentNode.Parent;
+            // update the parent info on inserted node
+            if (newNode != null)
+            {
+                newNode.Parent = currentNode.Parent;
+            }
         }
 
 
