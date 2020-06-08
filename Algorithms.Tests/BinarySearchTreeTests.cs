@@ -114,6 +114,40 @@ namespace Algorithms.Tests
         }
 
         [Test]
+        public void Insert_SameKey_OverwritesValue([Values(true, false)] bool isIterative)
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+
+            var bst = new BSearchTree<int, string>();
+            bst.Put(6, GetValue(6));
+            bst.Put(3, GetValue(3));
+            bst.Put(2, GetValue(2));
+            bst.Put(1, GetValue(1));
+            bst.Put(4, GetValue(4));
+            bst.Put(8, GetValue(8));
+            bst.Put(7, GetValue(7));
+            bst.Put(10, GetValue(10));
+            bst.Put(9, GetValue(9));
+            bst.Put(12, GetValue(12));
+
+            string expected = "replaced_value";
+
+            // act
+            bst.Put(8, expected);
+
+            // assert
+            Assert.That(bst.Get(8), Is.EqualTo(expected));
+        }
+
+        [Test]
         public void Delete_LeaflessNodeLeft_IsCorrect() 
         {
             // arrange
@@ -263,8 +297,6 @@ namespace Algorithms.Tests
             bst.Put(12, GetValue(12));
             bst.Put(15, GetValue(15));
 
-            var root1 = bst.Root;
-
             // act
             bst.Delete(12);
 
@@ -299,6 +331,108 @@ namespace Algorithms.Tests
             });
         }
 
+        [Test]
+        public void Delete_RootNode_IsCorrect()
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /                   /   \
+            //<1>                  <9>   <12>
+            //                              \
+            //                              <15>
+            var bst = new BSearchTree<int, string>();
+            bst.Put(6, GetValue(6));
+            bst.Put(3, GetValue(3));
+            bst.Put(2, GetValue(2));
+            bst.Put(1, GetValue(1));
+            bst.Put(4, GetValue(4));
+            bst.Put(8, GetValue(8));
+            bst.Put(7, GetValue(7));
+            bst.Put(10, GetValue(10));
+            bst.Put(9, GetValue(9));
+            bst.Put(12, GetValue(12));
+            bst.Put(15, GetValue(15));
+
+            var root1 = bst.Root;
+
+            // act
+            bst.Delete(6);
+
+            // assert
+            var root = bst.Root;
+
+            // verify deleted node and BST integrity
+            // expected tree:
+            //             <7>
+            //           /     \
+            //      <3>         <8>
+            //      /  \           \
+            //   <2>   <4>         <10>
+            //   /                 /   \
+            //<1>                <9>   <12>
+            //                            \
+            //                            <15>
+            Assert.Multiple(() => {
+                Assert.That(root.Key, Is.EqualTo(7)); // node replaced with a successor
+
+                Assert.That(root.Left.Key, Is.EqualTo(3));
+                Assert.That(root.Left.Left.Key, Is.EqualTo(2));
+                Assert.That(root.Left.Left.Left.Key, Is.EqualTo(1));
+                Assert.That(root.Left.Right.Key, Is.EqualTo(4));
+
+                Assert.That(root.Right.Key, Is.EqualTo(8));
+                Assert.That(root.Right.Left, Is.EqualTo(null)); // past place of the successor that replaced the root
+                Assert.That(root.Right.Right.Key, Is.EqualTo(10));
+                Assert.That(root.Right.Right.Left.Key, Is.EqualTo(9));
+                Assert.That(root.Right.Right.Right.Key, Is.EqualTo(12));
+                Assert.That(root.Right.Right.Right.Right.Key, Is.EqualTo(15));
+
+            });
+        }
+
+        [Test]
+        public void Delete_All_IsCorrect()
+        {
+            // arrange
+            // Initial tree:
+            //             <6>
+            //           /     \
+            //      <3>           <8>
+            //      /  \         /   \
+            //   <2>   <4>     <7>   <10>
+            //   /       \          /   \
+            //<1>        <5>      <9>   <11>
+
+            var bst = new BSearchTree<int, string>();
+            bst.Put(6, GetValue(6));
+            bst.Put(3, GetValue(3));
+            bst.Put(2, GetValue(2));
+            bst.Put(1, GetValue(1));
+            bst.Put(4, GetValue(4));
+            bst.Put(8, GetValue(8));
+            bst.Put(7, GetValue(7));
+            bst.Put(10, GetValue(10));
+            bst.Put(9, GetValue(9));
+            bst.Put(11, GetValue(11));
+            bst.Put(5, GetValue(5));
+
+            // act
+            var keys = bst.GetKeys();
+            foreach(var key in keys)
+            {
+                bst.Delete(key);
+            }
+            
+            // assert
+            var root = bst.Root;
+
+            Assert.That(root, Is.EqualTo(null));
+        }
 
         [Test]
         public void Delete_NodeWithTwoLeafsCase1_IsCorrect() 

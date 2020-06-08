@@ -1,17 +1,23 @@
 ﻿using Algorithms.DataStructures.BinaryTree;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Algorithms.DataStructures.BinarySearchTree
 {
     /// <summary>
-    /// Binary search trees (BST), sometimes called ordered or sorted binary trees. 
+    /// Definition. A binary search tree (BST) is a binary tree where each node has a Comparable key (and an associated value) 
+    /// and satisfies the restriction:
+    ///  - that the key in any node is larger than the keys in all nodes in that node's left subtree 
+    ///  - and smaller than the keys in all nodes in that node's right subtree.
     /// 
     /// In Binary Search Tree, all the nodes to the left of a node have values less the value of the node, 
     /// and all the nodes to the right of a node have values greater than the value of the node.
     /// 
-    /// TODO: provide complexity
+    /// Algorithm:      Average     Worst case
+    /// Space           O(n)        O(n)
+    /// Search          O(log n)    O(n)
+    /// Insert          O(log n)    O(n)
+    /// Delete          O(log n)    O(n)
     /// 
     /// </summary>
     public class BSearchTree<TKey, TValue> where TKey : IComparable<TKey>
@@ -28,12 +34,25 @@ namespace Algorithms.DataStructures.BinarySearchTree
         }
 
         #region public methods
+
+        /// <summary>
+        /// Returns the value associated with the given key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public TValue Get(TKey key)
         {
             var node = GetNodeRecursively(Root, key);
             return node == null ? default : node.Value;
         }
 
+        /// <summary>
+        /// Inserts the specified key-value pair into the symbol table, 
+        /// overwriting the old value with the new value if the symbol table already contains the specified key.s
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="isIterative"></param>
         public void Put(TKey key, TValue value, bool isIterative = false)
         {
             Root = isIterative
@@ -41,13 +60,23 @@ namespace Algorithms.DataStructures.BinarySearchTree
                 : PutRecursively(Root, new BinaryTreeNode<TKey, TValue>(key, value));
         }
 
+        /// <summary>
+        /// Removes the specified key and its associated value from this symbol table
+        /// (if the key is in this symbol table).
+        /// </summary>
+        /// <param name="key"></param>
         public void Delete(TKey key)
         {
             var node = GetNodeRecursively(Root, key);
-            if (node == null) throw new InvalidOperationException($"Couldn't find node with key {key}");
-            Delete(node);
+            if (node != null) Delete(node);
         }
 
+        /// <summary>
+        /// Does this symbol table contain the given key?
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="isIterative"></param>
+        /// <returns></returns>
         public bool Contains(TKey key, bool isIterative = false)
         {
             var node = isIterative
@@ -57,6 +86,10 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return node != null;
         }
 
+        /// <summary>
+        /// Inorder traversal.
+        /// </summary>
+        /// <returns></returns>
         public IList<TKey> GetKeys()
         {
             var list = new List<TKey>();
@@ -64,6 +97,9 @@ namespace Algorithms.DataStructures.BinarySearchTree
             return list;
         }
 
+        /// <summary>
+        /// Clears the tree.
+        /// </summary>
         public void Clear()
         {
             Root = null;
@@ -115,7 +151,7 @@ namespace Algorithms.DataStructures.BinarySearchTree
                         curNode = curNode.Right;
                     }
                 }
-                else // newNode.Key.CompareTo(curNode.Key) < 0
+                else if (newNode.Key.CompareTo(curNode.Key) < 0)
                 {
                     if (curNode.Left == null)
                     {
@@ -128,6 +164,10 @@ namespace Algorithms.DataStructures.BinarySearchTree
                         parent = curNode;
                         curNode = curNode.Left;
                     }
+                }
+                else
+                {
+                    curNode.Value = value;
                 }
             }
 
@@ -146,6 +186,10 @@ namespace Algorithms.DataStructures.BinarySearchTree
             {
                 newNode.Parent = node;
                 node.Right = PutRecursively(node.Right, newNode);
+            }
+            else
+            {
+                node.Value = newNode.Value;
             }
                 
             return node;
