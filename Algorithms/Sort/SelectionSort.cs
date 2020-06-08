@@ -19,7 +19,7 @@ namespace Algorithms.Sort
     /// Worst: O(1) auxiliary
     /// 
     /// </summary>
-    public class SelectionSort
+    public static class SelectionSort
     {
         public static void Sort<T>(T[] arr) where T : IComparable<T>
         {

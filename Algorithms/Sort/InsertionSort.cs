@@ -16,7 +16,7 @@ namespace Algorithms.Sort
     /// Cost model: space
     /// Worst: O(n) total, O(1) auxiliary
     /// </summary>
-    public class InsertionSort
+    public static class InsertionSort
     {
         public static void Sort<T>(T[] arr) where T : IComparable<T>
         {

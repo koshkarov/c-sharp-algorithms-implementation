@@ -50,7 +50,7 @@ namespace Algorithms.Tests
                     stack.Pop();
                 }
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 Assert.Fail("Failed to pop all elements.");
             }

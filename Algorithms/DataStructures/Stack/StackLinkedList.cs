@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Algorithms.DataStructures.LinkedList;
+using System;
 
 namespace Algorithms.DataStructures.Stack
 {

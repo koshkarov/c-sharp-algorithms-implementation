@@ -6,9 +6,9 @@
     /// <typeparam name="T">The element type of the doubly linked list.</typeparam>
     public class DoublyLinkedListNode<T>
     {
-        public T Value;
-        public DoublyLinkedListNode<T> Next;
-        public DoublyLinkedListNode<T> Prev;
+        public T Value { get; set; }
+        public DoublyLinkedListNode<T> Next { get; set; }
+        public DoublyLinkedListNode<T> Prev { get; set; }
 
         public DoublyLinkedListNode(T value) { Value = value; }
     }

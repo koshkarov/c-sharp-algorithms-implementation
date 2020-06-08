@@ -16,10 +16,8 @@ namespace Algorithms.Sort
     /// Space Complexity:
     /// Worst: O(log(n))
     /// </summary>
-    public class QuickSort
+    public static class QuickSort
     {
-        private static readonly Random Random = new Random();
-
         public static void Sort<T>(T[] arr) where T : IComparable<T>
         {
             Sort(arr, 0, arr.Length - 1);

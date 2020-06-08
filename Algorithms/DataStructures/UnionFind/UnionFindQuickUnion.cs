@@ -13,7 +13,7 @@ namespace Algorithms.DataStructures.UnionFind
     /// </remarks>
     public class UnionFindQuickUnion : IUnionFind
     {
-        private int[] _arr;
+        private readonly int[] _arr;
         private int _count;
 
         public UnionFindQuickUnion(int size)

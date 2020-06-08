@@ -16,7 +16,7 @@ namespace Algorithms.Sort
     /// Space Complexity:
     /// Worst: O(n)
     /// </summary>
-    public class MergeSort {
+    public static class MergeSort {
 
         public static void Sort<T>(T[] a, MergeSortType type = MergeSortType.TopDown) where T : IComparable<T>
         {
