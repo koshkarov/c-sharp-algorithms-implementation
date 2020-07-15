@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
 
-namespace Algorithms.DataStructures.BinaryTree
+namespace Algorithms.DataStructures.Trees.Binary
 {
     /// <summary>
     /// A binary tree is a non linear data structure where each node can have at most 2 child nodes. 
@@ -45,7 +44,7 @@ namespace Algorithms.DataStructures.BinaryTree
             {
                 Root = insertNode;
                 return;
-            } 
+            }
             else
             {
                 Insert(Root, insertNode);
@@ -57,7 +56,7 @@ namespace Algorithms.DataStructures.BinaryTree
             var queue = new Queue<BinaryTreeNode<TKey, TValue>>();
             queue.Enqueue(currentNode);
 
-            while(queue.Count != 0)
+            while (queue.Count != 0)
             {
                 var tempNode = queue.Dequeue();
 

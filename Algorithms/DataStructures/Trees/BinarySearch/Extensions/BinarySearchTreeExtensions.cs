@@ -1,4 +1,4 @@
-﻿using Algorithms.DataStructures.BinaryTree;
+﻿using Algorithms.DataStructures.Trees.Binary;
 using System;
 
 namespace Algorithms.DataStructures.BinarySearchTree.Extensions
