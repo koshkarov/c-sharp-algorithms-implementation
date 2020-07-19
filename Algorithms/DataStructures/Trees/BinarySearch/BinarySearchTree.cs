@@ -23,6 +23,7 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
     public class BinarySearchTree<TKey, TValue> where TKey : IComparable<TKey>
     {
         public BinaryTreeNode<TKey, TValue> Root { get; protected set; }
+        public int Size { get; protected set; } = 0;
 
         public BinarySearchTree()
         {
@@ -40,7 +41,7 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public virtual TValue Get(TKey key)
+        public virtual TValue GetValue(TKey key)
         {
             var node = GetNodeRecursively(Root, key);
             return node == null ? default : node.Value;
@@ -53,12 +54,10 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="isIterative"></param>
-        public virtual void Add(TKey key, TValue value, bool isIterative = false)
+        public virtual void Add(TKey key, TValue value, Method method = Method.Recursive)
         {
             var newNode = new BinaryTreeNode<TKey, TValue>(key, value);
-            Root = isIterative
-                ? AddIteratively(newNode)
-                : AddRecursively(Root, newNode);
+            Add(newNode, method);
         }
 
         /// <summary>
@@ -238,69 +237,110 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
             return curNode;
         }
 
-        protected BinaryTreeNode<TKey, TValue> AddIteratively(BinaryTreeNode<TKey, TValue> newNode)
+        protected virtual void Add(BinaryTreeNode<TKey, TValue> node, Method method)
         {
-            if (Root == null) return newNode;
+            if (method == Method.Iterative)
+            {
+                AddIteratively(node);
+            }
+            else
+            {
+                if (Root == null) {
+                    Root = node;
+                    Size++;
+                }
+                else
+                {
+                    AddRecursively(Root, node);
+                }
+            }
+        }
 
-            BinaryTreeNode<TKey, TValue> parent = null, curNode = Root;
+        protected void AddIteratively(BinaryTreeNode<TKey, TValue> newNode)
+        {
+            if (Root == null) {
+                Root = newNode;
+                Size++;
+                return;
+            };
+
+            var curNode = Root;
             while (curNode != null)
             {
-                if (newNode.Key.CompareTo(curNode.Key) > 0)
-                {
-                    if (curNode.Right == null)
-                    {
-                        newNode.Parent = parent;
-                        curNode.Right = newNode;
-                        break;
-                    }
-                    else
-                    {
-                        parent = curNode;
-                        curNode = curNode.Right;
-                    }
-                }
-                else if (newNode.Key.CompareTo(curNode.Key) < 0)
+                // case when new node key precedes parent key
+                if (newNode.Key.CompareTo(curNode.Key) < 0)
                 {
                     if (curNode.Left == null)
                     {
-                        newNode.Parent = parent;
                         curNode.Left = newNode;
+                        newNode.Parent = curNode;
+                        Size++;
                         break;
                     }
                     else
                     {
-                        parent = curNode;
                         curNode = curNode.Left;
+                    }
+                }
+                // case when new node key follows parent key
+                else if (newNode.Key.CompareTo(curNode.Key) > 0)
+                {
+                    if (curNode.Right == null)
+                    {
+                        
+                        curNode.Right = newNode;
+                        newNode.Parent = curNode;
+                        Size++;
+                        break;
+                    }
+                    else
+                    {
+                        curNode = curNode.Right;
                     }
                 }
                 else
                 {
+                    // case when key matches. so we just update the value
                     curNode.Value = newNode.Value;
                 }
             }
-
-            return Root;
         }
 
-        protected BinaryTreeNode<TKey, TValue> AddRecursively(BinaryTreeNode<TKey, TValue> startNode, BinaryTreeNode<TKey, TValue> newNode)
+        protected void AddRecursively(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> newNode)
         {
-            if (startNode == null) startNode = newNode;
-            else if (newNode.Key.CompareTo(startNode.Key) < 0)
+            // case when new node key precedes parent key
+            if (newNode.Key.CompareTo(parent.Key) < 0)
             {
-                newNode.Parent = startNode;
-                startNode.Left = AddRecursively(startNode.Left, newNode);
+                if (parent.Left == null)
+                {
+                    parent.Left = newNode;
+                    newNode.Parent = parent;
+                    Size++;
+                } 
+                else
+                {
+                    AddRecursively(parent.Left, newNode);
+                }
             }
-            else if (newNode.Key.CompareTo(startNode.Key) > 0)
+            // case when new node key follows parent key
+            else if (newNode.Key.CompareTo(parent.Key) > 0)
             {
-                newNode.Parent = startNode;
-                startNode.Right = AddRecursively(startNode.Right, newNode);
+                if (parent.Right == null)
+                {
+                    parent.Right = newNode;
+                    newNode.Parent = parent;
+                    Size++;
+                } 
+                else
+                {
+                    AddRecursively(parent.Right, newNode);
+                }
             }
             else
             {
-                startNode.Value = newNode.Value;
+                // case when key matches. so we just update the value
+                parent.Value = newNode.Value;
             }
-
-            return startNode;
         }
 
         /// <summary>
@@ -340,6 +380,7 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
                 successor.Left = delNode.Left;
                 successor.Left.Parent = successor;
             }
+            Size--;
         }
 
         #endregion

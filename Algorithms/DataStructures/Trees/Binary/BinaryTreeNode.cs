@@ -3,7 +3,7 @@
 namespace Algorithms.DataStructures.Trees.Binary
 {
     /// <summary>
-    /// Creates a new tree node of arbitrary type <typeparamref name="T"/>
+    /// Creates a new binary tree node of arbitrary type <typeparamref name="T"/>
     /// </summary>
     /// 
     public class BinaryTreeNode<TKey, TValue> where TKey : IComparable<TKey>

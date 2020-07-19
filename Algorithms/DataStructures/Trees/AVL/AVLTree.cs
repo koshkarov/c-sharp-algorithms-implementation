@@ -26,17 +26,17 @@ namespace Algorithms.DataStructures.Trees.AVL
 
         public int Height => Root == null ? 0 : Math.Max(Root.LeftHeight, Root.RightHeight) + 1;
 
-        public override TValue Get(TKey key)
+        public override TValue GetValue(TKey key)
         {
-            return base.Get(key);
+            return base.GetValue(key);
         }
 
 
-        public override void Add(TKey key, TValue value, bool isIterative = false)
+        public override void Add(TKey key, TValue value, Method method = Method.Recursive)
         {
             // insert as usual
             var newNode = new AVLTreeNode<TKey, TValue>(key, value);
-            AddRecursively(Root, newNode);
+            base.Add(newNode, method);
 
             // update the heights
 

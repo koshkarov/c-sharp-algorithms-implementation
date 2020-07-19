@@ -3,6 +3,7 @@ using Algorithms.DataStructures.Trees.Binary;
 using Algorithms.DataStructures.Trees.BinarySearch;
 using Algorithms.Extensions;
 using NUnit.Framework;
+using Shouldly;
 
 namespace Algorithms.Tests
 {
@@ -36,7 +37,7 @@ namespace Algorithms.Tests
             return bst;
         }
 
-        private BinaryTreeNode<int, string> CreateBalancedBinarySearchTree(int elementsCount, bool isIterative = false)
+        private BinaryTreeNode<int, string> CreateBalancedBinarySearchTree(int elementsCount, Method method = Method.Recursive)
         {
             // create an array for values
             var balancedValues = new int[elementsCount];
@@ -54,14 +55,14 @@ namespace Algorithms.Tests
             // act
             foreach (var item in balancedValues)
             {
-                bst.Add(item, GetValue(item), isIterative);
+                bst.Add(item, GetValue(item), method);
             }
 
             return bst.Root;
         }
 
         [Test]
-        public void Add_IncrementalKeys_BuildsCorrectTree([Values(true, false)]bool isIterative)
+        public void Add_IncrementalKeys_BuildsCorrectTree([Values(Method.Recursive, Method.Iterative)] Method method)
         {
             // arrange 
             var bst = new BinarySearchTree<int, string>();
@@ -69,7 +70,7 @@ namespace Algorithms.Tests
             // act
             for (int i = 0; i < iterations; i++)
             {
-                bst.Add(i, GetValue(i), isIterative);
+                bst.Add(i, GetValue(i), method);
             }
 
             // assert
@@ -82,7 +83,7 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void Add_DecrementalKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
+        public void Add_DecrementalKeys_BuildsCorrectTree([Values(Method.Recursive, Method.Iterative)] Method method)
         {
             // arrange
             var bst = new BinarySearchTree<int, string>();
@@ -91,7 +92,7 @@ namespace Algorithms.Tests
             // act
             for (int i = iterations; i > 0; i--)
             {
-                bst.Add(i, GetValue(i), isIterative);
+                bst.Add(i, GetValue(i), method);
             }
 
             // assert
@@ -104,10 +105,10 @@ namespace Algorithms.Tests
         }
 
         [Test]
-        public void Add_BalancedKeys_BuildsCorrectTree([Values(true, false)] bool isIterative)
+        public void Add_BalancedKeys_BuildsCorrectTree([Values(Method.Recursive, Method.Iterative)] Method method)
         {
             // arrange
-            var rootNode = CreateBalancedBinarySearchTree(100, isIterative);
+            var rootNode = CreateBalancedBinarySearchTree(100, method);
 
             // assert
             Assert.IsTrue(rootNode.IsBinarySearchTree());
@@ -144,7 +145,7 @@ namespace Algorithms.Tests
             bst.Add(8, expected);
 
             // assert
-            Assert.That(bst.Get(8), Is.EqualTo(expected));
+            Assert.That(bst.GetValue(8), Is.EqualTo(expected));
         }
 
         [Test]
@@ -610,6 +611,45 @@ namespace Algorithms.Tests
 
             var traversed = bst.GetKeys();
             for (int i = 0; i < iterations; i++) Assert.IsTrue(traversed[i] == i);
+        }
+
+        [Test]
+        public void Add_TreeSize_IsCorrect([Values(Method.Recursive, Method.Iterative)] Method method)
+        {
+            var iterations = 100;
+            // create a binary search tree
+            var bst = new BinarySearchTree<int, string>();
+
+            // act
+            for (int i = 0; i < iterations; i++)
+            {
+                bst.Add(i, GetValue(i), method);
+            }
+
+            bst.Size.ShouldBe(iterations);
+        }
+
+        [Test]
+        public void AddDelete_TreeSize_IsCorrect()
+        {
+            var iterations = 100;
+            // create a binary search tree
+            var bst = new BinarySearchTree<int, string>();
+
+            // act
+            // add 100 objects
+            for (int key = 0; key < iterations; key++)
+            {
+                bst.Add(key, GetValue(key));
+            }
+
+            // delete 100 objects
+            for (int key = 0; key < iterations; key++)
+            {
+                bst.Delete(key);
+            }
+
+            bst.Size.ShouldBe(0);
         }
 
     }
