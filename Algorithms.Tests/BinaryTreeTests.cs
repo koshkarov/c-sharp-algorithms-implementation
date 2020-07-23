@@ -1,5 +1,4 @@
-﻿using Algorithms.DataStructures.BinaryTree;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Algorithms.Tests
 {
