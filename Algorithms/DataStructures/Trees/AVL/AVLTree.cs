@@ -1,4 +1,5 @@
-﻿using Algorithms.DataStructures.Trees.BinarySearch;
+﻿using Algorithms.DataStructures.Trees.Binary;
+using Algorithms.DataStructures.Trees.BinarySearch;
 using System;
 
 /// <summary>
@@ -11,7 +12,6 @@ namespace Algorithms.DataStructures.Trees.AVL
 {
     public class AVLTree<TKey, TValue> : BinarySearchTree<TKey, TValue> where TKey : IComparable<TKey>
     {
-
         public new AVLTreeNode<TKey, TValue> Root
         {
             get
@@ -24,27 +24,36 @@ namespace Algorithms.DataStructures.Trees.AVL
             }
         }
 
-        public int Height => Root == null ? 0 : Math.Max(Root.LeftHeight, Root.RightHeight) + 1;
-
         public override TValue GetValue(TKey key)
         {
             return base.GetValue(key);
         }
 
-
         public override void Add(TKey key, TValue value, Method method = Method.Recursive)
         {
-            // insert as usual
             var newNode = new AVLTreeNode<TKey, TValue>(key, value);
-            base.Add(newNode, method);
-
-            // update the heights
-
+            var node = (AVLTreeNode<TKey, TValue>)base.Add(newNode, method);
+            CheckBalance(node);
         }
 
         public override void Delete(TKey key)
         {
-            // TODO
+            AVLTreeNode<TKey, TValue> parent = null;
+
+            // find node
+            var node = (AVLTreeNode<TKey, TValue>)GetNodeRecursively(Root, key);
+
+            if (node != null)
+            {
+                // save its parent to check the balance later
+                parent = node.Parent;
+
+                // delete node
+                Delete(node);
+            }
+
+            // check the balance
+            if (parent != null) CheckBalance(node);
         }
 
         public override bool Contains(TKey key, bool isIterative = false)
@@ -53,6 +62,60 @@ namespace Algorithms.DataStructures.Trees.AVL
         }
 
         #region private methods
+
+        /// <summary>
+        /// Checks the balance of the node and rebalances if required.
+        /// </summary>
+        /// <param name="node"></param>
+        private void CheckBalance(AVLTreeNode<TKey, TValue> node)
+        {
+            int rightNodeHeight = Height(node.Right);
+            int leftNodeHeight = Height(node.Left);
+
+            if (leftNodeHeight - rightNodeHeight > 1 || leftNodeHeight - rightNodeHeight < -1)
+            {
+                Rebalance(node);
+            }
+
+            if (node.Parent == null) return;
+
+            CheckBalance(node.Parent);
+        }
+
+        /// <summary>
+        /// Rebalances (rotates) tree nodes.
+        /// </summary>
+        /// <param name="node"></param>
+        private void Rebalance(AVLTreeNode<TKey, TValue> node)
+        {
+            if (Height(node.Left) - Height(node.Right) > 1)
+            {
+                if (Height(node.Left.Left) > Height(node.Left.Right))
+                {
+                    RotateRight(node);
+                }
+                else
+                {
+                    RotateLeftRight(node);
+                }
+            }
+            else
+            {
+                if (Height(node.Right.Right) > Height(node.Right.Left))
+                {
+                    RotateLeft(node);
+                }
+                else
+                {
+                    RotateRightLeft(node);
+                }
+            }
+
+            if (node.Parent == null)
+            {
+                Root = node;
+            }
+        }
 
         /// <summary>
         /// Performs right rotation if the imbalance in the left child's left sub-tree.
@@ -64,8 +127,7 @@ namespace Algorithms.DataStructures.Trees.AVL
             node.Left = temp.Right;
             temp.Right = node;
 
-            // update parents
-            Transplant(node, temp);
+            UpdateParentsOnRotation(node, temp);
 
             return temp;
         }
@@ -80,10 +142,33 @@ namespace Algorithms.DataStructures.Trees.AVL
             node.Right = temp.Left;
             temp.Left = node;
 
-            // update parents
-            Transplant(node, temp);
+            UpdateParentsOnRotation(node, temp);
 
             return temp;
+        }
+
+        /// <summary>
+        /// Updates parents for rotated nodes.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="temp"></param>
+        private void UpdateParentsOnRotation(AVLTreeNode<TKey, TValue> node, AVLTreeNode<TKey, TValue> temp)
+        {
+            // update parents
+            if (node.Parent == null)
+            {
+                Root = temp;
+                temp.Parent = null;
+            }
+            else
+            {
+                temp.Parent = node.Parent;
+            }
+
+            if (node.Left != null) node.Left.Parent = node;
+            if (node.Right != null) node.Right.Parent = node;
+            if (temp.Left != null) temp.Left.Parent = temp;
+            if (temp.Right != null) temp.Right.Parent = temp;
         }
 
         /// <summary>

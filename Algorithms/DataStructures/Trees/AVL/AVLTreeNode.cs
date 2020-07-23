@@ -5,9 +5,6 @@ namespace Algorithms.DataStructures.Trees.AVL
 {
     public class AVLTreeNode<TKey, TValue> : BinaryTreeNode<TKey, TValue> where TKey : IComparable<TKey>
     {
-        public int LeftHeight { get; private set; } = -1;
-        public int RightHeight { get; private set; } = -1;
-
         public AVLTreeNode(TKey key, TValue value) : base(key, value)
         {
         }

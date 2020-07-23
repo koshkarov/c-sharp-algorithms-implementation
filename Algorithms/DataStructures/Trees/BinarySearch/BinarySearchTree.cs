@@ -49,15 +49,16 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
 
         /// <summary>
         /// Inserts the specified key-value pair into the symbol table, 
-        /// overwriting the old value with the new value if the symbol table already contains the specified key.s
+        /// overwriting the old value with the new value if the symbol table already contains the specified key.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
-        /// <param name="isIterative"></param>
+        /// <param name="method"></param>
+        /// <returns>Added or updated node in the tree.</returns>
         public virtual void Add(TKey key, TValue value, Method method = Method.Recursive)
         {
             var newNode = new BinaryTreeNode<TKey, TValue>(key, value);
-            Add(newNode, method);
+            Add(newNode);
         }
 
         /// <summary>
@@ -103,6 +104,17 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
         public virtual void Clear()
         {
             Root = null;
+        }
+
+        /// <summary>
+        /// Returns the height of the subtree rooted at the parameter node.
+        /// </summary>
+        protected virtual int Height(BinaryTreeNode<TKey, TValue> node)
+        {
+            if (node == null)
+                return 0;
+            else
+                return 1 + Math.Max(Height(node.Left), Height(node.Right));
         }
 
         #endregion
@@ -171,17 +183,6 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
             return curNode;
         }
 
-        /// <summary>
-        /// Returns the height of the subtree rooted at the parameter node.
-        /// </summary>
-        protected virtual int GetHeight(BinaryTreeNode<TKey, TValue> startNode)
-        {
-            if (startNode == null)
-                return 0;
-            else
-                return 1 + Math.Max(GetHeight(startNode.Left), GetHeight(startNode.Right));
-        }
-
         protected void Transplant(BinaryTreeNode<TKey, TValue> currentNode, BinaryTreeNode<TKey, TValue> newNode)
         {
             // case when currentNode is root node
@@ -237,33 +238,36 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
             return curNode;
         }
 
-        protected virtual void Add(BinaryTreeNode<TKey, TValue> node, Method method)
+        /// <summary>
+        /// Inserts the specified key-value pair into the symbol table, 
+        /// overwriting the old value with the new value if the symbol table already contains the specified key.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="method"></param>
+        /// <returns>Added or updated node in the tree.</returns>
+        public virtual BinaryTreeNode<TKey, TValue> Add(BinaryTreeNode<TKey, TValue> node, Method method = Method.Recursive)
         {
+            if (Root == null)
+            {
+                Root = node;
+                Size++;
+                return Root;
+            }
+
             if (method == Method.Iterative)
-            {
-                AddIteratively(node);
-            }
+                return AddIteratively(node);
             else
-            {
-                if (Root == null) {
-                    Root = node;
-                    Size++;
-                }
-                else
-                {
-                    AddRecursively(Root, node);
-                }
-            }
+                return AddRecursively(Root, node);
         }
 
-        protected void AddIteratively(BinaryTreeNode<TKey, TValue> newNode)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newNode"></param>
+        /// <returns>Added or updated node in the tree.</returns>
+        protected BinaryTreeNode<TKey, TValue> AddIteratively(BinaryTreeNode<TKey, TValue> newNode)
         {
-            if (Root == null) {
-                Root = newNode;
-                Size++;
-                return;
-            };
-
             var curNode = Root;
             while (curNode != null)
             {
@@ -302,11 +306,20 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
                 {
                     // case when key matches. so we just update the value
                     curNode.Value = newNode.Value;
+                    return curNode;
                 }
             }
+
+            return newNode;
         }
 
-        protected void AddRecursively(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> newNode)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="newNode"></param>
+        /// <returns>Added or updated node in the tree.</returns>
+        protected BinaryTreeNode<TKey, TValue> AddRecursively(BinaryTreeNode<TKey, TValue> parent, BinaryTreeNode<TKey, TValue> newNode)
         {
             // case when new node key precedes parent key
             if (newNode.Key.CompareTo(parent.Key) < 0)
@@ -340,7 +353,10 @@ namespace Algorithms.DataStructures.Trees.BinarySearch
             {
                 // case when key matches. so we just update the value
                 parent.Value = newNode.Value;
+                return parent;
             }
+
+            return newNode;
         }
 
         /// <summary>

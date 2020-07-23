@@ -1,17 +1,15 @@
 ﻿using Algorithms.DataStructures.BinarySearchTree.Extensions;
 using Algorithms.DataStructures.Trees.Binary;
 using Algorithms.DataStructures.Trees.BinarySearch;
-using Algorithms.Extensions;
+using Algorithms.Tests.Base;
 using NUnit.Framework;
 using Shouldly;
 
 namespace Algorithms.Tests
 {
     [TestFixture]
-    class BinarySearchTreeTests
+    class BinarySearchTreeTests : BaseTest
     {
-        private string GetValue(int key) => key.ToString();
-
         private BinarySearchTree<int, string> GetValid()
         {
             // Initial tree:
@@ -24,30 +22,22 @@ namespace Algorithms.Tests
             //<1>                  <9>   <12>
 
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
             return bst;
         }
 
-        private BinaryTreeNode<int, string> CreateBalancedBinarySearchTree(int elementsCount, Method method = Method.Recursive)
+        private BinaryTreeNode<int, string> CreateBalancedBinarySearchTree(int count, Method method = Method.Recursive)
         {
-            // create an array for values
-            var balancedValues = new int[elementsCount];
-
-            // populate it
-            for (int i = 0; i < elementsCount; i++) 
-                balancedValues[i] = i;
-
-            // shuffle values in-place
-            balancedValues.Shuffle();
+            var balancedValues = GetBalancedArray(count);
 
             // create a binary search tree
             var bst = new BinarySearchTree<int, string>();
@@ -55,7 +45,7 @@ namespace Algorithms.Tests
             // act
             foreach (var item in balancedValues)
             {
-                bst.Add(item, GetValue(item), method);
+                bst.Add(item, Stringify(item), method);
             }
 
             return bst.Root;
@@ -70,7 +60,7 @@ namespace Algorithms.Tests
             // act
             for (int i = 0; i < iterations; i++)
             {
-                bst.Add(i, GetValue(i), method);
+                bst.Add(i, Stringify(i), method);
             }
 
             // assert
@@ -92,7 +82,7 @@ namespace Algorithms.Tests
             // act
             for (int i = iterations; i > 0; i--)
             {
-                bst.Add(i, GetValue(i), method);
+                bst.Add(i, Stringify(i), method);
             }
 
             // assert
@@ -128,16 +118,16 @@ namespace Algorithms.Tests
             //<1>                  <9>   <12>
 
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
 
             string expected = "replaced_value";
 
@@ -229,16 +219,16 @@ namespace Algorithms.Tests
             //   /                   /   \
             //<1>                  <9>   <12>
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
 
             // act
             bst.Delete(2);
@@ -286,17 +276,17 @@ namespace Algorithms.Tests
             //                              \
             //                              <15>
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
-            bst.Add(15, GetValue(15));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
+            bst.Add(15, Stringify(15));
 
             // act
             bst.Delete(12);
@@ -347,17 +337,17 @@ namespace Algorithms.Tests
             //                              \
             //                              <15>
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
-            bst.Add(15, GetValue(15));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
+            bst.Add(15, Stringify(15));
 
             var root1 = bst.Root;
 
@@ -410,17 +400,17 @@ namespace Algorithms.Tests
             //<1>        <5>      <9>   <11>
 
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(11, GetValue(11));
-            bst.Add(5, GetValue(5));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(11, Stringify(11));
+            bst.Add(5, Stringify(5));
 
             // act
             var keys = bst.GetKeys();
@@ -497,19 +487,19 @@ namespace Algorithms.Tests
             //                       <13>
 
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
+            bst.Add(6, Stringify(6));
             // root left
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
             // root right
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(15, GetValue(15));
-            bst.Add(20, GetValue(20));
-            bst.Add(12, GetValue(12));
-            bst.Add(13, GetValue(13));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(15, Stringify(15));
+            bst.Add(20, Stringify(20));
+            bst.Add(12, Stringify(12));
+            bst.Add(13, Stringify(13));
 
             // act
             bst.Delete(8);
@@ -554,16 +544,16 @@ namespace Algorithms.Tests
         public void IsBinarySearchTree_InvalidTree_ReturnsFalse()
         {
             // create Invlid Binary Search Tree
-            var notBinarySearchTree = new BinarySearchTree<int, string>(new BinaryTreeNode<int, string>(3, GetValue(3))
+            var notBinarySearchTree = new BinarySearchTree<int, string>(new BinaryTreeNode<int, string>(3, Stringify(3))
             {
-                Left = new BinaryTreeNode<int, string>(2, GetValue(2))
+                Left = new BinaryTreeNode<int, string>(2, Stringify(2))
                 {
-                    Left = new BinaryTreeNode<int, string>(1, GetValue(1))
+                    Left = new BinaryTreeNode<int, string>(1, Stringify(1))
                 },
-                Right = new BinaryTreeNode<int, string>(5, GetValue(5))
+                Right = new BinaryTreeNode<int, string>(5, Stringify(5))
                 {
-                    Right = new BinaryTreeNode<int, string>(1, GetValue(1)),
-                    Left = new BinaryTreeNode<int, string>(6, GetValue(6))
+                    Right = new BinaryTreeNode<int, string>(1, Stringify(1)),
+                    Left = new BinaryTreeNode<int, string>(6, Stringify(6))
                 }
             });
 
@@ -576,18 +566,18 @@ namespace Algorithms.Tests
         public void ContainsKey([Values(true, false)] bool isIterative)
         {
             var bst = new BinarySearchTree<int, string>();
-            bst.Add(6, GetValue(6));
-            bst.Add(3, GetValue(3));
-            bst.Add(2, GetValue(2));
-            bst.Add(1, GetValue(1));
-            bst.Add(4, GetValue(4));
-            bst.Add(8, GetValue(8));
-            bst.Add(7, GetValue(7));
-            bst.Add(10, GetValue(10));
-            bst.Add(9, GetValue(9));
-            bst.Add(12, GetValue(12));
-            bst.Add(11, GetValue(11));
-            bst.Add(5, GetValue(5));
+            bst.Add(6, Stringify(6));
+            bst.Add(3, Stringify(3));
+            bst.Add(2, Stringify(2));
+            bst.Add(1, Stringify(1));
+            bst.Add(4, Stringify(4));
+            bst.Add(8, Stringify(8));
+            bst.Add(7, Stringify(7));
+            bst.Add(10, Stringify(10));
+            bst.Add(9, Stringify(9));
+            bst.Add(12, Stringify(12));
+            bst.Add(11, Stringify(11));
+            bst.Add(5, Stringify(5));
 
             for (int i = 1; i < 12; i++)
             {
@@ -623,7 +613,7 @@ namespace Algorithms.Tests
             // act
             for (int i = 0; i < iterations; i++)
             {
-                bst.Add(i, GetValue(i), method);
+                bst.Add(i, Stringify(i), method);
             }
 
             bst.Size.ShouldBe(iterations);
@@ -640,7 +630,7 @@ namespace Algorithms.Tests
             // add 100 objects
             for (int key = 0; key < iterations; key++)
             {
-                bst.Add(key, GetValue(key));
+                bst.Add(key, Stringify(key));
             }
 
             // delete 100 objects
